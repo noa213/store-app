@@ -24,12 +24,11 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'favs_ar'
+        'favs_ar',
     ];
     
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'favs_ar' => 'array', 
+        'favs_ar' => 'array',
     ];
 
     /**
