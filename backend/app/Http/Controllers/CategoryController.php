@@ -5,9 +5,33 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Services\CategoryService;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+
+    protected $categoryService;
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
+    public function fetchCategoriesList(Request $request)
+{
+    \Log::info("Fetch Categories Called");
+    return response()->json("gbjhyugvh");
+}
+
+    // public function fetchCategoriesList(Request $request)
+    // {
+    //     // $data = $this->categoryService->getCategoriesList($request->query());
+
+    //     // return response()->json(['data' => $data]);
+    //     return response()->json("gbjhyugvh");
+        
+    // }
     /**
      * Display a listing of the resource.
      */
