@@ -20,11 +20,11 @@ class DrinkController extends Controller
 
     public function store(StoreDrinkRequest $request)
     {
-        $validatedData = $request->validated();
-
-        return $this->drinkService->create($validatedData);
+      //  $validatedData = $request->validated();
+        return response()->json("gbjhyugvh");
+        //return $this->drinkService->create($validatedData);
     }
-    public function index(): JsonResponse
+    public function fetchDrinkList(): JsonResponse
     {
         try {
             $drinks = $this->drinkService->fetchAll();
