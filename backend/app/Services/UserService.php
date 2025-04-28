@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
-    // יצירת משתמש חדש
     public function createUser(array $data)
     {
         $user = User::create([
@@ -21,7 +20,6 @@ class UserService
         return $user;
     }
 
-    // עדכון פרטי משתמש
     public function updateUser(User $user, array $data)
     {
         if (isset($data['password'])) {
@@ -32,21 +30,35 @@ class UserService
         return $user;
     }
 
-    // חיפוש משתמש לפי מזהה
     public function getUserById($id)
     {
         return User::find($id);
     }
 
-    // מחיקת משתמש
     public function deleteUser(User $user)
     {
         $user->delete();
     }
 
-    // קבלת כל המשתמשים
     public function getAllUsers()
     {
         return User::all();
     }
+
+    public function getUserRole(User $user)
+    {
+        return $user->role();
+    }
+
+    public function changeRole(User $user)
+    {
+        if( $user->role == 'admin')
+        {
+            $user->role = 'user';
+        }
+        if( $user->role == 'user')
+        {
+            $user->role = 'admin';
+        }
+    }      
 }
