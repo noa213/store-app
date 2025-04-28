@@ -1,8 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
+
+Route::get('/categories', [CategoryController::class, 'fetchCategoriesList']);
 
 Route::prefix('users')->group(function () {
     Route::post('/', [UserController::class, 'store']);    
