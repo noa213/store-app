@@ -14,6 +14,13 @@ Route::prefix('users')->group(function () {
     Route::get('/{id}', [UserController::class, 'show']);   
     Route::put('/{id}', [UserController::class, 'update']); 
     Route::delete('/{id}', [UserController::class, 'destroy']); 
+
+    Route::get('/fetch/userinfo/{id}', [UserController::class, 'fetchUserInfo']);
+    Route::post('/decode/token', [UserController::class, 'decodeToken']);
+    Route::put('/change/role/{id}', [UserController::class, 'changeRole']);
+    Route::get('/role/admin', [UserController::class, 'getRoleAdmin']);
+    Route::get('/role/user', [UserController::class, 'getRoleUser']);
+    Route::get('/role/auth', [UserController::class, 'getRoleAuthUser']);
 });
 
 Route::prefix('drinks')->group(function () {
