@@ -16,4 +16,11 @@ class CategoryService
         return Category::orderBy($sort, $reverse)
             ->paginate($perPage, ['*'], 'page', $page);
     }
+    public function getCategoryById($id)
+    {
+        return Category::find($id);
+        // return Category::where('id', $id)->first();
+        // $category = Category::where('id', $id)->first();
+
+    }
 }

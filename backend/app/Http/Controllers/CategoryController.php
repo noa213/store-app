@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
@@ -18,26 +19,31 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    public function fetchCategoriesList(Request $request)
-{
-    \Log::info("Fetch Categories Called");
-    return response()->json("gbjhyugvh");
-}
-
-    // public function fetchCategoriesList(Request $request)
-    // {
-    //     // $data = $this->categoryService->getCategoriesList($request->query());
-
-    //     // return response()->json(['data' => $data]);
-    //     return response()->json("gbjhyugvh");
-        
-    // }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $data = $this->categoryService->getCategoriesList($request->query());
+        return response()->json(['data' => $data]);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($categoryId)
+    {
+        try {
+            $category = $this->categoryService->getCategoryById($categoryId);
+            if (!$category) {
+                return response()->json(['msg' => 'Category not found'], response::HTTP_NOT_FOUND);
+            }
+
+            return response()->json(['data' => $category], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            \Log::error('Error from fetchCategoryById function: ' . $e->getMessage());
+            return response()->json(['msg' => 'Internal Server Error'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -56,13 +62,6 @@ class CategoryController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
