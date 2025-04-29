@@ -25,14 +25,18 @@ class CategoryService
         return Category::create($data);
     }
     public function updateCategory($id, array $data)
-{
-    $category = Category::find($id);
+    {
+        $category = Category::find($id);
 
-    if (!$category) {
-        return null;
+        if (!$category) {
+            return null;
+        }
+
+        $category->update($data);
+        return $category;
     }
-
-    $category->update($data);
-    return $category;
-}
+    public function deleteCategoryById($id)
+    {
+        return Category::destroy($id) > 0;
+    }
 }
