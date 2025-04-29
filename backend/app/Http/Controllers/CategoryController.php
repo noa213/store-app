@@ -59,8 +59,16 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
-    }
+        try {
+            $category = $this->categoryService->createCategory($request->validated());
+
+            return response()->json(['msg' => 'Category saved successfully in the system.'], Response::HTTP_OK);
+
+        } catch (\Exception $e) {
+            \Log::error('Error from createCategory function: ' . $e->getMessage());
+
+            return response()->json(['msg' => 'Internal Server Error'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }    }
 
 
     /**

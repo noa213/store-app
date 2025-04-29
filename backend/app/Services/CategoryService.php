@@ -19,8 +19,9 @@ class CategoryService
     public function getCategoryById($id)
     {
         return Category::find($id);
-        // return Category::where('id', $id)->first();
-        // $category = Category::where('id', $id)->first();
-
+    }
+    public function createCategory(array $data)
+    {
+        return Category::create($data);
     }
 }
