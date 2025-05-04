@@ -9,4 +9,16 @@ class Category extends Model
 {
     /** @use HasFactory<\Database\Factories\CategoryFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'url_name',
+        'info',
+        'img_url',
+    ];
+
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'int';
+
 }

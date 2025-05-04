@@ -16,4 +16,27 @@ class CategoryService
         return Category::orderBy($sort, $reverse)
             ->paginate($perPage, ['*'], 'page', $page);
     }
+    public function getCategoryById($id)
+    {
+        return Category::find($id);
+    }
+    public function createCategory(array $data)
+    {
+        return Category::create($data);
+    }
+    public function updateCategory($id, array $data)
+    {
+        $category = Category::find($id);
+
+        if (!$category) {
+            return null;
+        }
+
+        $category->update($data);
+        return $category;
+    }
+    public function deleteCategoryById($id)
+    {
+        return Category::destroy($id) > 0;
+    }
 }
