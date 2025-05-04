@@ -11,7 +11,7 @@ class UpdateDrinkRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class UpdateDrinkRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'sometimes|string|max:255',
+            'ml' => 'sometimes|numeric|min:0',
+            'price' => 'sometimes|numeric|min:0',
+            'user_id' => 'sometimes|exists:users,id'
         ];
     }
 }

@@ -25,7 +25,7 @@ Route::prefix('drinks')->group(function () {
     Route::post('/', [DrinkController::class, 'store']);    
     Route::get('/', [DrinkController::class, 'index']);       
     Route::get('/{id}', [DrinkController::class, 'show']);   
-    Route::put('/{id}', [DrinkController::class, 'update']); 
+    Route::patch('/{id}', [DrinkController::class, 'update']); 
     Route::delete('/{id}', [DrinkController::class, 'destroy']); 
     Route::get('/user/{userId}', [DrinkController::class, 'getByUserId']);
 });
