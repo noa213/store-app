@@ -19,7 +19,6 @@ class UserController extends Controller
 
     public function index()
     {
-        Log::info('הגעתי לפונקציית index של המשתמשים');
         return response()->json($this->userService->getAllUsers(), 200);
     }
 
