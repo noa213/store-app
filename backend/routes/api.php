@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DrinkController;
 
-Route::get('/categories', [CategoryController::class, 'fetchCategoriesList']);
-
 Route::prefix('users')->group(function () {
     Route::post('/', [UserController::class, 'store']);    
     Route::get('/', [UserController::class, 'index']);       
@@ -31,3 +29,12 @@ Route::prefix('drinks')->group(function () {
     Route::delete('/{id}', [DrinkController::class, 'destroy']); 
     Route::get('/user/{userId}', [DrinkController::class, 'getByUserId']);
 });
+
+Route::prefix('categories')->group(function () {
+    Route::get('/', [CategoryController::class, 'index']); 
+    Route::get('/{id}', [CategoryController::class, 'show']);   
+    Route::post('/', [CategoryController::class, 'store']);    
+    Route::put('/{id}', [CategoryController::class, 'update']); 
+    Route::delete('/{id}', [CategoryController::class, 'destroy']); 
+});
+
