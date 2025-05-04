@@ -16,11 +16,11 @@ class ProductService
 
         return Product::orderBy($sort, $reverse)
             ->paginate($perPage, ['*'], 'page', $page);
-    }    public function getCategoryById($id)
-    {
-        return Category::find($id);
     }
-    public function createCategory(array $data)
+    public function getProductById($id)
+    {
+        return Product::find($id);
+    }    public function createCategory(array $data)
     {
         return Category::create($data);
     }

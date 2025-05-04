@@ -30,7 +30,8 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             \Log::error("Error in ProductController@index: " . $e->getMessage());
             return response()->json(['msg' => 'Internal Server Error'], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }    }
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -51,11 +52,28 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
-    }
+        try {
+            $product = $this->productService->getProductById($id);
 
+            if (!$product) {
+                return response()->json([
+                    'msg' => 'Product not found'
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            return response()->json([
+                'data' => $product
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            \Log::error("Error from getProductById: " . $e->getMessage());
+
+            return response()->json([
+                'msg' => 'Internal Server Error'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
     /**
      * Show the form for editing the specified resource.
      */
