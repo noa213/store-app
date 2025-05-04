@@ -19,10 +19,9 @@ class CategoryController extends Controller
     }
 
     public function fetchCategoriesList(Request $request)
-{
-    \Log::info("Fetch Categories Called");
-    return response()->json("gbjhyugvh");
-}
+    {
+        return response()->json("fdbjknknjnhnijhbn");
+    }
 
     // public function fetchCategoriesList(Request $request)
     // {
@@ -30,7 +29,7 @@ class CategoryController extends Controller
 
     //     // return response()->json(['data' => $data]);
     //     return response()->json("gbjhyugvh");
-        
+
     // }
     /**
      * Display a listing of the resource.
