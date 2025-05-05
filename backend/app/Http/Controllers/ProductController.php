@@ -66,7 +66,8 @@ class ProductController extends Controller
             return response()->json([
                 'msg' => 'Internal Server Error'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }    }
+        }
+    }
 
     /**
      * Display the specified resource.
@@ -104,9 +105,26 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, $id)
     {
-        //
+        try {
+            $result = ProductService::updateProduct($id, $request->validated());
+
+            if (!$result) {
+                return response()->json(['msg' => 'Product not found'], 404);
+            }
+
+            return response()->json([
+                'msg' => 'Product updated successfully',
+                'data' => $result
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error from updateProduct function: ' . $e->getMessage());
+
+            return response()->json([
+                'msg' => 'Internal Server Error'
+            ], 500);
+        }
     }
 
     /**

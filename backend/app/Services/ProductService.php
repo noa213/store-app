@@ -26,16 +26,14 @@ class ProductService
         $data['user_id'] = $userId;
         Product::create($data);
     }
-    public function updateCategory($id, array $data)
+    public static function updateProduct($id, $data)
     {
-        $category = Category::find($id);
-
-        if (!$category) {
+        $product = Product::find($id);
+        if (!$product) {
             return null;
         }
-
-        $category->update($data);
-        return $category;
+        $product->update($data);
+        return $product;
     }
     public function deleteCategoryById($id)
     {
