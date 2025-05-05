@@ -21,6 +21,10 @@ class ProductService
     {
         return Product::find($id);
     }
+    public static function getProductsByUserId($userId)
+    {
+        return Product::where('user_id', $userId)->get();
+    }
     public function createProduct(array $data, int $userId): void
     {
         $data['user_id'] = $userId;

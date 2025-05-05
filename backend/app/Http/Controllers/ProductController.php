@@ -94,6 +94,29 @@ class ProductController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function showByUserId($userId)
+    {
+        try {
+            $products = ProductService::getProductsByUserId($userId);
+
+            if ($products->isEmpty()) {
+                return response()->json([
+                    'msg' => 'No products found for this user.'
+                ], 404);
+            }
+
+            return response()->json([
+                'data' => $products
+            ], 200);
+        } catch (\Exception $e) {
+            \Log::error("Error from getProductsByUserId: " . $e->getMessage());
+
+            return response()->json([
+                'msg' => 'Internal Server Error'
+            ], 500);
+        }
+    }
     /**
      * Show the form for editing the specified resource.
      */

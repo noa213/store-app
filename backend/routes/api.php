@@ -24,6 +24,7 @@ Route::prefix('categories')->group(function () {
 Route::prefix('products')->group(function () {
     Route::get('/', [ProductController::class, 'index']); 
     Route::get('/{id}', [ProductController::class, 'show']);   
+    Route::get('/by-user/{userId}', [ProductController::class, 'showByUserId']);   
     Route::post('/', [ProductController::class, 'store']);    
     Route::put('/{id}', [ProductController::class, 'update']); 
     Route::delete('/{id}', [ProductController::class, 'destroy']); 
