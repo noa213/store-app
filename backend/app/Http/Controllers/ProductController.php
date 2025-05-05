@@ -46,8 +46,27 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
-    }
+        try {
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'msg' => 'User not authenticated'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+
+            $this->productService->createProduct($request->validated(), $user->id);
+
+            return response()->json([
+                'msg' => 'Product created successfully'
+            ], Response::HTTP_OK);
+
+        } catch (\Exception $e) {
+            \Log::error("Error from createProduct: " . $e->getMessage());
+
+            return response()->json([
+                'msg' => 'Internal Server Error'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }    }
 
     /**
      * Display the specified resource.

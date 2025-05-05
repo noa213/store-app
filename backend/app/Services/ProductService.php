@@ -20,9 +20,11 @@ class ProductService
     public function getProductById($id)
     {
         return Product::find($id);
-    }    public function createCategory(array $data)
+    }
+    public function createProduct(array $data, int $userId): void
     {
-        return Category::create($data);
+        $data['user_id'] = $userId;
+        Product::create($data);
     }
     public function updateCategory($id, array $data)
     {
