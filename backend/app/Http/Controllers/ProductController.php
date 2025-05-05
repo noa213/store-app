@@ -130,8 +130,20 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        try {
+            $deleted = ProductService::deleteProductById($id);
+
+            if (!$deleted) {
+                return response()->json(['msg' => 'Product not found'], Response::HTTP_NOT_FOUND);
+            }
+
+            return response()->json(['msg' => 'Product deleted successfully'], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            \Log::error("Error from deleteProduct function: " . $e->getMessage());
+
+            return response()->json(['msg' => 'Internal Server Error'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

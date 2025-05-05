@@ -35,8 +35,8 @@ class ProductService
         $product->update($data);
         return $product;
     }
-    public function deleteCategoryById($id)
+    public static function deleteProductById($id)
     {
-        return Category::destroy($id) > 0;
+        return Product::destroy($id) > 0;
     }
 }
