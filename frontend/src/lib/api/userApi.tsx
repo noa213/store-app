@@ -1,4 +1,5 @@
 import axios from "axios";
+import { User, LoginData, SignupData } from '@/types/user';
 
 const API_URL = "http://localhost:3003/users";
 
@@ -6,24 +7,6 @@ const axiosInstance = axios.create({
   baseURL: API_URL,
   withCredentials: true,
 });
-
-export interface User {
-  _id: string;
-  name: string;
-  email: string;
-  role: string;
-}
-
-export interface LoginData {
-  email: string;
-  password: string;
-}
-
-export interface SignupData {
-  name: string;
-  email: string;
-  password: string;
-}
 
 export const login = async (data: LoginData) => {
   try {
