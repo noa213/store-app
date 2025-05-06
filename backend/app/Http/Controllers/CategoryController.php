@@ -207,7 +207,7 @@ class CategoryController extends Controller
      *                 type: string
      *                 example: "https://via.placeholder.com/640x480.png/0000cc?text=new+category+image"
      *     responses:
-     *       200:
+     *       201:
      *         description: Successfully created the category
      *         content:
      *           application/json:
@@ -246,7 +246,7 @@ class CategoryController extends Controller
         try {
             $category = $this->categoryService->createCategory($request->validated());
 
-            return response()->json(['msg' => 'Category saved successfully in the system.'], Response::HTTP_OK);
+            return response()->json(['msg' => 'Category saved successfully in the system.'], Response::HTTP_CREATED);
 
         } catch (\Exception $e) {
             \Log::error('Error from createCategory function: ' . $e->getMessage());
