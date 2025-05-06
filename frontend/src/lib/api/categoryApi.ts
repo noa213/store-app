@@ -2,14 +2,14 @@ import { http } from '@/lib/http';
 import { Category } from '@/types/category';
 
 // get all categories
-export const getCategories = async (): Promise<Category[]> => {
+export const getAllCategories = async (): Promise<Category[]> => {
   try {
-    const response = await http.get<Category[]>('/categories');
+    const response = await http.get<any>('/categories');
 
     if (response.status !== 200)
       throw new Error(`${response.status}: error fetching categories`);
 
-    return response.data;
+    return response.data.data.data;
   } catch (error: any) {
     console.error('Error:', error.message);
     throw new Error(error.message);
