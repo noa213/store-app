@@ -20,7 +20,54 @@ class ProductController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/products",
+     *     summary="Get all products",
+     *     tags={"Product"},
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Page number",
+     *         required=false,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Items per page",
+     *         required=false,
+     *         @OA\Schema(type="integer", example=10)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="Product 1"),
+     *                     @OA\Property(property="price", type="number", format="float", example=19.99),
+     *                     @OA\Property(property="description", type="string", example="A great product"),
+     *                     @OA\Property(property="user_id", type="integer", example=5),
+     *                     @OA\Property(property="created_at", type="string", format="date-time", example="2024-12-01T12:34:56Z"),
+     *                     @OA\Property(property="updated_at", type="string", format="date-time", example="2024-12-01T12:34:56Z")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Server error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Internal Server Error")
+     *         )
+     *     )
+     * )
      */
     public function index(Request $request)
     {
@@ -43,6 +90,66 @@ class ProductController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     */
+    /**
+     * @OA\Post(
+     *     path="/api/products",
+     *     summary="Create a new product",
+     *     tags={"Product"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "info", "price", "category_url", "img_url"},
+     *             @OA\Property(property="name", type="string", maxLength=255, example="Product Name"),
+     *             @OA\Property(property="info", type="string", example="Detailed description of the product."),
+     *             @OA\Property(property="price", type="number", format="float", minimum=0, example=99.99),
+     *             @OA\Property(property="category_url", type="string", maxLength=255, example="electronics"),
+     *             @OA\Property(property="img_url", type="string", format="uri", example="https://example.com/image.jpg")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Product created successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Product created successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="User not authenticated",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="User not authenticated")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="The given data was invalid."),
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="array",
+     *                     @OA\Items(type="string", example="The name field is required.")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Internal Server Error")
+     *         )
+     *     )
+     * )
      */
     public function store(StoreProductRequest $request)
     {
@@ -72,6 +179,55 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
+    /**
+     * @OA\Get(
+     *     path="/api/products/{id}",
+     *     summary="Get product by ID",
+     *     tags={"Product"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="The ID of the product to retrieve",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Product found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 example={
+     *                     "id": 1,
+     *                     "name": "Sample Product",
+     *                     "info": "This is a sample product",
+     *                     "price": 49.99,
+     *                     "category_url": "electronics",
+     *                     "img_url": "https://example.com/image.jpg"
+     *                 }
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Product not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Product not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Internal Server Error")
+     *         )
+     *     )
+     * )
+     */
     public function show($id)
     {
         try {
@@ -95,6 +251,56 @@ class ProductController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/products/by-user/{userId}",
+     *     summary="Get products by user ID",
+     *     tags={"Product"},
+     *     @OA\Parameter(
+     *         name="userId",
+     *         in="path",
+     *         required=true,
+     *         description="The ID of the user whose products to retrieve",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Products found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="Sample Product"),
+     *                     @OA\Property(property="info", type="string", example="This is a sample product"),
+     *                     @OA\Property(property="price", type="number", format="float", example=49.99),
+     *                     @OA\Property(property="category_url", type="string", example="electronics"),
+     *                     @OA\Property(property="img_url", type="string", format="uri", example="https://example.com/image.jpg")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No products found for this user",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="No products found for this user.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Internal Server Error")
+     *         )
+     *     )
+     * )
+     */
     public function showByUserId($userId)
     {
         try {
@@ -117,6 +323,7 @@ class ProductController extends Controller
             ], 500);
         }
     }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -127,6 +334,84 @@ class ProductController extends Controller
 
     /**
      * Update the specified resource in storage.
+     */
+    /**
+     * @OA\Put(
+     *     path="/api/products/{id}",
+     *     summary="Update an existing product",
+     *     tags={"Product"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the product to update",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "info", "price", "category_url", "img_url"},
+     *             @OA\Property(property="name", type="string", example="Updated Product Name"),
+     *             @OA\Property(property="info", type="string", example="Updated description of the product"),
+     *             @OA\Property(property="price", type="number", format="float", example=99.99),
+     *             @OA\Property(property="category_url", type="string", example="electronics"),
+     *             @OA\Property(property="img_url", type="string", format="uri", example="https://example.com/image.jpg")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Product updated successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Product updated successfully"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 example={
+     *                     "id": 1,
+     *                     "name": "Updated Product Name",
+     *                     "info": "Updated description of the product",
+     *                     "price": 99.99,
+     *                     "category_url": "electronics",
+     *                     "img_url": "https://example.com/image.jpg"
+     *                 }
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Product not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Product not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="The given data was invalid."),
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="array",
+     *                     @OA\Items(type="string", example="The name field is required.")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Internal Server Error")
+     *         )
+     *     )
+     * )
      */
     public function update(UpdateProductRequest $request, $id)
     {
@@ -152,6 +437,44 @@ class ProductController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     */
+    /**
+     * @OA\Delete(
+     *     path="/api/products/{id}",
+     *     summary="Delete a product by its ID",
+     *     tags={"Product"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the product to delete",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Product deleted successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Product deleted successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Product not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Product not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Internal Server Error")
+     *         )
+     *     )
+     * )
      */
     public function destroy($id)
     {
