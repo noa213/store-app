@@ -2,30 +2,37 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getUsers, deleteUser, getUserInfo } from "@/lib/api/userApi";
+import { getUsers, deleteUser, getUserInfo } from "@/app/lib/api/userApi";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface User {
-  _id: string;
+  id: string;
   name: string;
   email: string;
   role: string;
 }
 
-const AllUsers = () => {
+type Props = {
+  refreshSignal?: boolean;
+};
+
+export default function AllUsers({ refreshSignal }: Props) {
   const [users, setUsers] = useState<User[]>([]);
   const [authUser, setAuthUser] = useState<Partial<User>>({});
   const router = useRouter();
-  const searchParams = useSearchParams()!;
+  const searchParams = useSearchParams();
 
-  useEffect(() => {
-    if (searchParams.get("adduser")) {
-      toast.success("User added successfully!", { position: "top-right" });
-    } else if (searchParams.get("error")) {
-      toast.error(searchParams.get("error")!, { position: "top-right" });
+  const fetchUsers = async () => {
+    try {
+      const data = await getUsers();
+      console.log("Fetched users:", data);
+      setUsers(data);
+    } catch (error: any) {
+      console.error("Error fetching users:", error.response?.data || error.message);
+      toast.error("Failed to fetch users.", { position: "top-right" });
     }
-  }, [searchParams]);
+  };
 
   const getAuthUser = async () => {
     try {
@@ -38,22 +45,26 @@ const AllUsers = () => {
     }
   };
 
-  const fetchUsers = async () => {
-    try {
-      const data = await getUsers();
-       
-      
-       setUsers(data);
-    } catch (error: any) {
-      console.error("Error fetching users:", error.response?.data || error.message);
-      toast.error("Failed to fetch users.", { position: "top-right" });
-    }
-  };
-
   useEffect(() => {
     getAuthUser();
     fetchUsers();
   }, []);
+
+  useEffect(() => {
+    if (refreshSignal) {
+      fetchUsers();
+    }
+  }, [refreshSignal]);
+
+  useEffect(() => {
+    if (!searchParams) return;
+
+    if (searchParams.get("adduser")) {
+      toast.success("User added successfully!", { position: "top-right" });
+    } else if (searchParams.get("error")) {
+      toast.error(searchParams.get("error")!, { position: "top-right" });
+    }
+  }, [searchParams]);
 
   const handleDelete = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
@@ -73,7 +84,7 @@ const AllUsers = () => {
   };
 
   const handleView = (id: string) => {
-    router.push(`/users/details/${id}`);
+    router.push(`/users/${id}`);
   };
 
   return (
@@ -91,14 +102,14 @@ const AllUsers = () => {
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user._id} className="hover:bg-gray-50">
+            <tr key={user.id} className="hover:bg-gray-50">
               <td className="px-6 py-4 border-b border-gray-200 text-gray-700">{user.name}</td>
               <td className="px-6 py-4 border-b border-gray-200 text-gray-700">{user.email}</td>
               <td className="px-6 py-4 border-b border-gray-200 text-gray-700">{user.role}</td>
-              <td className="px-6 py-4 border-b border-gray-200 flex items-center space-x-2">
+              <td className="px-6 py-4 border-b border-gray-200 flex flex-wrap gap-2">
                 <button
                   className="px-3 py-1 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded shadow"
-                  onClick={() => handleView(user._id)}
+                  onClick={() => handleView(user.id)}
                 >
                   View
                 </button>
@@ -106,13 +117,13 @@ const AllUsers = () => {
                   <>
                     <button
                       className="px-3 py-1 text-sm font-medium text-white bg-green-500 hover:bg-green-600 rounded shadow"
-                      onClick={() => handleEdit(user._id)}
+                      onClick={() => handleEdit(user.id)}
                     >
                       Edit
                     </button>
                     <button
                       className="px-3 py-1 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded shadow"
-                      onClick={() => handleDelete(user._id)}
+                      onClick={() => handleDelete(user.id)}
                     >
                       Delete
                     </button>
@@ -123,6 +134,7 @@ const AllUsers = () => {
           ))}
         </tbody>
       </table>
+
       <div className="flex justify-between mt-6">
         <button
           className="px-6 py-3 text-white bg-gray-700 hover:bg-gray-800 font-medium text-sm rounded shadow"
@@ -130,17 +142,21 @@ const AllUsers = () => {
         >
           Back to Dashboard
         </button>
-        {(authUser.role === "admin" || authUser.role === "superadmin") && (
+        <button
+            className="px-6 py-3 text-white bg-green-500 hover:bg-green-600 font-medium text-sm rounded shadow"
+            onClick={() => router.push("/")}
+          >
+            Add New User
+          </button>
+        {/* {(authUser.role === "admin" || authUser.role === "superadmin") && (
           <button
             className="px-6 py-3 text-white bg-green-500 hover:bg-green-600 font-medium text-sm rounded shadow"
             onClick={() => router.push("/users/add")}
           >
             Add New User
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );
-};
-
-export default AllUsers;
+}

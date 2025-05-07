@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3003/users";
+const API_URL = "http://localhost:8000/api/users";
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
 });
 
 export interface User {
-  _id: string;
+  id: string;
   name: string;
   email: string;
   role: string;
@@ -68,7 +68,7 @@ export const signup = async (data: SignupData) => {
 
 export const getUserInfo = async (): Promise<User> => {
     try {
-      const response = await axiosInstance.get<User>("/user");
+      const response = await axiosInstance.get<User>("");
       return response.data;
     } catch (error: any) {
       console.error("Error in getUserInfo:", error.response?.data || error.message);
@@ -78,7 +78,7 @@ export const getUserInfo = async (): Promise<User> => {
 
 export const getUsers = async (): Promise<User[]> => {
     try {
-      const response = await axiosInstance.get<User[]>("/index");
+      const response = await axiosInstance.get<User[]>("");
       return response.data;
     } catch (error: any) {
       console.error("Error in getUsers:", error.response?.data || error.message);
@@ -86,7 +86,7 @@ export const getUsers = async (): Promise<User[]> => {
     }
 };  
   
-export const addUser = async (user: SignupData) => {
+export const createUser = async (user: SignupData) => {
   try {
     const response = await axiosInstance.post("/", user);
     return response.data;
@@ -108,7 +108,9 @@ export const deleteUser = async (id: string) => {
 
 export const getUserById = async (id: string) => {
   try {
-    const response = await axiosInstance.get(`/${id}`);
+    const url = `/${id}`;
+    console.log("Requesting URL:", axiosInstance.defaults.baseURL + url);
+    const response = await axiosInstance.get(url);
     return response.data;
   } catch (error: any) {
     console.error("Error in getUserById:", error.response?.data || error.message);
