@@ -35,7 +35,6 @@ export const getCategoryById = async (categoryId: string): Promise<Category> => 
 export const addCategory = async (category: Category): Promise<Category> => {
   try {
     const response = await http.post<Category>('/categories', category);
-
     if (response.status !== 201)
       throw new Error(`${response.status}: ${response.statusText}`);
 
@@ -53,6 +52,21 @@ export const updateCategory = async (
 ): Promise<string> => {
   try {
     const response = await http.put<{ msg: string }>(`/categories/${categoryId}`, updatedCategory);
+
+    if (response.status !== 200)
+      throw new Error(`${response.status}: ${response.statusText}`);
+
+    return response.data.msg;
+  } catch (error: any) {
+    console.error('Error:', error.message);
+    throw new Error(error.message);
+  }
+};
+
+// delete category by ID
+export const deleteCategory = async (categoryId: string): Promise<string> => {
+  try {
+    const response = await http.delete<{ msg: string }>(`/categories/${categoryId}`);
 
     if (response.status !== 200)
       throw new Error(`${response.status}: ${response.statusText}`);
