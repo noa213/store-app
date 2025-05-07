@@ -1,5 +1,5 @@
 import axios from "axios";
-import { User, LoginData, SignupData } from '@/types/user';
+import { User, LoginData, SignupData } from '@/app/types/user';
 
 const API_URL = "http://localhost:3003/users";
 
