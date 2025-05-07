@@ -7,12 +7,25 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface User {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   role: string;
 }
 
+const AllUsers = () => {
+  const [users, setUsers] = useState<User[]>([]);
+  const [authUser, setAuthUser] = useState<Partial<User>>({});
+  const router = useRouter();
+  const searchParams = useSearchParams()!;
+
+  useEffect(() => {
+    if (searchParams.get("adduser")) {
+      toast.success("User added successfully!", { position: "top-right" });
+    } else if (searchParams.get("error")) {
+      toast.error(searchParams.get("error")!, { position: "top-right" });
+    }
+  }, [searchParams]);
 type Props = {
   refreshSignal?: boolean;
 };
@@ -33,7 +46,7 @@ export default function AllUsers({ refreshSignal }: Props) {
       toast.error("Failed to fetch users.", { position: "top-right" });
     }
   };
-
+  
   const getAuthUser = async () => {
     try {
       const user = await getUserInfo();
@@ -42,6 +55,18 @@ export default function AllUsers({ refreshSignal }: Props) {
       console.error("Error fetching user info:", error.response?.data || error.message);
       toast.error("Failed to fetch user info. Redirecting to Home Page.", { position: "top-right" });
       router.push("/");
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const data = await getUsers();
+       
+      
+       setUsers(data);
+    } catch (error: any) {
+      console.error("Error fetching users:", error.response?.data || error.message);
+      toast.error("Failed to fetch users.", { position: "top-right" });
     }
   };
 
@@ -134,7 +159,6 @@ export default function AllUsers({ refreshSignal }: Props) {
           ))}
         </tbody>
       </table>
-
       <div className="flex justify-between mt-6">
         <button
           className="px-6 py-3 text-white bg-gray-700 hover:bg-gray-800 font-medium text-sm rounded shadow"
@@ -155,8 +179,11 @@ export default function AllUsers({ refreshSignal }: Props) {
           >
             Add New User
           </button>
-        )} */}
+
+        )}
       </div>
     </div>
   );
-}
+};
+
+export default AllUsers;

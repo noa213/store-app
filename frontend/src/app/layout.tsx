@@ -1,4 +1,7 @@
-import DrinkTable from "../app/components/drinks/DrinkTable";
+
+import DrinkTable from "@/app/components/drinks/DrinkTable";
+import UserPage from "./components/users/AllUsers";
+
 import Users from "../app/Pages/Users/page";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -31,13 +34,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-<<<<<<< HEAD
+
         <Users/>
         <DrinkTable/>
-=======
-        {/* <UserPage/>
+       {/* <UserPage/>
         <DrinkTable/> */}
->>>>>>> e6acd962f467e2b9e4208fdf26e5f8e5285a2bb6
+
       </body>
     </html>
   );
