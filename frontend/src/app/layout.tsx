@@ -1,12 +1,9 @@
-
 import DrinkTable from "@/app/components/drinks/DrinkTable";
-import UserPage from "./components/users/AllUsers";
 
-import Users from "../app/Pages/Users/page";
+import Users from "./pages/Users/page";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import './globals.css'
-import UsersPage from "./Pages/Users/page";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
