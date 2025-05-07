@@ -16,9 +16,4 @@ class Category extends Model
         'info',
         'img_url',
     ];
-
-    protected $primaryKey = 'id';
-    public $incrementing = false;
-    protected $keyType = 'int';
-
 }

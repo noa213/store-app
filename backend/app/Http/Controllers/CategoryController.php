@@ -177,9 +177,7 @@ class CategoryController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     */
-
-    /**
+     *
      * @swagger
      * /categories:
      *   post:
@@ -218,6 +216,10 @@ class CategoryController extends Controller
      *                   type: string
      *                   description: Success message
      *                   example: Category saved successfully in the system.
+     *                 id:
+     *                   type: integer
+     *                   description: The ID of the newly created category
+     *                   example: 1
      *       400:
      *         description: Invalid category data provided
      *         content:
@@ -246,7 +248,10 @@ class CategoryController extends Controller
         try {
             $category = $this->categoryService->createCategory($request->validated());
 
-            return response()->json(['msg' => 'Category saved successfully in the system.'], Response::HTTP_CREATED);
+            return response()->json([
+                'msg' => 'Category saved successfully in the system.',
+                'id' => $category->id,  
+            ], Response::HTTP_CREATED);
 
         } catch (\Exception $e) {
             \Log::error('Error from createCategory function: ' . $e->getMessage());

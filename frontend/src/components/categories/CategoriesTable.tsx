@@ -1,53 +1,46 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { getAllCategories } from '@/lib/api/categoryApi';
-import { Category } from '@/types/category';
+import React from "react";
+import { Category } from "@/types/category";
+import { IoTrashOutline } from "react-icons/io5";
 
-const CategoriesTable = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+type Props = {
+  categories: Category[];
+  loading: boolean;
+  setSelectedCategory: (category: Category) => void;
+  handleDeleteCategory: (categoryId: string) => void;
+};
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const data = await getAllCategories();
-        setCategories(data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+const CategoriesTable = ({ categories, loading, setSelectedCategory, handleDeleteCategory }: Props) => {
+  console.log('render CategoriesTable')
 
-    fetchCategories();
-  }, []);
-
-  if (loading) return <p className="text-center text-gray-600">Loading...</p>
+  if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Categories Management</h2>
-      <table className="w-full table-auto border-collapse border border-gray-300 shadow-sm rounded-lg">
-        <thead className="bg-gray-100 text-gray-700">
-          <tr>
-            <th className="px-6 py-3 border-b border-gray-200 text-left">Name</th>
-            <th className="px-6 py-3 border-b border-gray-200 text-left">URL</th>
-            <th className="px-6 py-3 border-b border-gray-200 text-left">Info</th>
-            <th className="px-6 py-3 border-b border-gray-200 text-left">IMG</th>
+    <table className="w-full border">
+      <thead>
+        <tr className="bg-gray-100">
+          <th className="p-2 border">Name</th>
+          <th className="p-2 border">URL</th>
+          <th className="p-2 border">Info</th>
+          <th className="p-2 border">Image</th>
+          <th className="p-2 border">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {categories.map((cat) => (
+          <tr key={cat.id} className="cursor-pointer hover:bg-gray-100">
+            <td className="p-2 border" onClick={() => setSelectedCategory(cat)}>{cat.name}</td>
+            <td className="p-2 border" onClick={() => setSelectedCategory(cat)}>{cat.url_name}</td>
+            <td className="p-2 border" onClick={() => setSelectedCategory(cat)}>{cat.info}</td>
+            <td className="p-2 border" onClick={() => setSelectedCategory(cat)}>
+              <img src={cat.img_url} alt={cat.name} className="w-16 h-16 object-cover" />
+            </td>
+            <td className="p-2 border flex justify-center items-center">
+              <IoTrashOutline onClick={() => handleDeleteCategory(cat.id!)}/>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          {categories.map((category: Category) => (
-            <tr key={category.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4 border-b border-gray-200">{category.name}</td>
-              <td className="px-6 py-4 border-b border-gray-200">{category.url_name}</td>
-              <td className="px-6 py-4 border-b border-gray-200">{category.info}</td>
-              <td className="px-6 py-4 border-b border-gray-200">{category.img_url}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        ))}
+      </tbody>
+    </table>
   );
 };
 
