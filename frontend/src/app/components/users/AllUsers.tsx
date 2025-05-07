@@ -26,7 +26,27 @@ const AllUsers = () => {
       toast.error(searchParams.get("error")!, { position: "top-right" });
     }
   }, [searchParams]);
+type Props = {
+  refreshSignal?: boolean;
+};
 
+export default function AllUsers({ refreshSignal }: Props) {
+  const [users, setUsers] = useState<User[]>([]);
+  const [authUser, setAuthUser] = useState<Partial<User>>({});
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const fetchUsers = async () => {
+    try {
+      const data = await getUsers();
+      console.log("Fetched users:", data);
+      setUsers(data);
+    } catch (error: any) {
+      console.error("Error fetching users:", error.response?.data || error.message);
+      toast.error("Failed to fetch users.", { position: "top-right" });
+    }
+  };
+  
   const getAuthUser = async () => {
     try {
       const user = await getUserInfo();
@@ -55,6 +75,22 @@ const AllUsers = () => {
     fetchUsers();
   }, []);
 
+  useEffect(() => {
+    if (refreshSignal) {
+      fetchUsers();
+    }
+  }, [refreshSignal]);
+
+  useEffect(() => {
+    if (!searchParams) return;
+
+    if (searchParams.get("adduser")) {
+      toast.success("User added successfully!", { position: "top-right" });
+    } else if (searchParams.get("error")) {
+      toast.error(searchParams.get("error")!, { position: "top-right" });
+    }
+  }, [searchParams]);
+
   const handleDelete = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
@@ -73,7 +109,7 @@ const AllUsers = () => {
   };
 
   const handleView = (id: string) => {
-    router.push(`/users/details/${id}`);
+    router.push(`/users/${id}`);
   };
 
   return (
@@ -91,14 +127,14 @@ const AllUsers = () => {
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user._id} className="hover:bg-gray-50">
+            <tr key={user.id} className="hover:bg-gray-50">
               <td className="px-6 py-4 border-b border-gray-200 text-gray-700">{user.name}</td>
               <td className="px-6 py-4 border-b border-gray-200 text-gray-700">{user.email}</td>
               <td className="px-6 py-4 border-b border-gray-200 text-gray-700">{user.role}</td>
-              <td className="px-6 py-4 border-b border-gray-200 flex items-center space-x-2">
+              <td className="px-6 py-4 border-b border-gray-200 flex flex-wrap gap-2">
                 <button
                   className="px-3 py-1 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded shadow"
-                  onClick={() => handleView(user._id)}
+                  onClick={() => handleView(user.id)}
                 >
                   View
                 </button>
@@ -106,13 +142,13 @@ const AllUsers = () => {
                   <>
                     <button
                       className="px-3 py-1 text-sm font-medium text-white bg-green-500 hover:bg-green-600 rounded shadow"
-                      onClick={() => handleEdit(user._id)}
+                      onClick={() => handleEdit(user.id)}
                     >
                       Edit
                     </button>
                     <button
                       className="px-3 py-1 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded shadow"
-                      onClick={() => handleDelete(user._id)}
+                      onClick={() => handleDelete(user.id)}
                     >
                       Delete
                     </button>
@@ -130,13 +166,20 @@ const AllUsers = () => {
         >
           Back to Dashboard
         </button>
-        {(authUser.role === "admin" || authUser.role === "superadmin") && (
+        <button
+            className="px-6 py-3 text-white bg-green-500 hover:bg-green-600 font-medium text-sm rounded shadow"
+            onClick={() => router.push("/")}
+          >
+            Add New User
+          </button>
+        {/* {(authUser.role === "admin" || authUser.role === "superadmin") && (
           <button
             className="px-6 py-3 text-white bg-green-500 hover:bg-green-600 font-medium text-sm rounded shadow"
             onClick={() => router.push("/users/add")}
           >
             Add New User
           </button>
+
         )}
       </div>
     </div>

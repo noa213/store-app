@@ -1,5 +1,6 @@
 import { http } from '@/lib/http';
-import { Category } from '@/app/types/category';
+
+import { Category } from '@/app/types/category'
 
 // get all categories
 export const getAllCategories = async (): Promise<Category[]> => {
