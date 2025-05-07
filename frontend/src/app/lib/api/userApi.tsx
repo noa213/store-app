@@ -1,4 +1,5 @@
 import axios from "axios";
+import { User, LoginData, SignupData } from '@/types/user';
 
 const API_URL = "http://localhost:8000/api/users";
 
@@ -7,6 +8,7 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+<<<<<<< HEAD:frontend/src/app/lib/api/userApi.tsx
 export interface User {
   id: string;
   name: string;
@@ -25,6 +27,8 @@ export interface SignupData {
   password: string;
 }
 
+=======
+>>>>>>> e6acd962f467e2b9e4208fdf26e5f8e5285a2bb6:frontend/src/lib/api/userApi.tsx
 export const login = async (data: LoginData) => {
   try {
     const response = await axiosInstance.post("/login", data);
