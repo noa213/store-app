@@ -1,6 +1,6 @@
 import DrinkTable from "@/app/components/drinks/DrinkTable";
 
-import Users from "./pages/Users/page";
+import Users from "./Pages/Users/page";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import './globals.css'

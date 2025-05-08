@@ -1,6 +1,6 @@
+import { LoginData, SignupData, User } from "@/app/types/user";
 import axios from "axios";
 
-import { User, LoginData, SignupData } from '@/app/types/user';
 const API_URL = "http://localhost:8000/api/users";
 
 
@@ -9,64 +9,64 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
+// export interface User {
+//   id: string;
+//   name: string;
+//   email: string;
+//   role: string;
+// }
 
-export interface LoginData {
-  email: string;
-  password: string;
-}
+// export interface LoginData {
+//   email: string;
+//   password: string;
+// }
 
-export interface SignupData {
-  name: string;
-  email: string;
-  password: string;
-}
+// export interface SignupData {
+//   name: string;
+//   email: string;
+//   password: string;
+// }
 
-export const login = async (data: LoginData) => {
-  try {
-    const response = await axiosInstance.post("/login", data);
-    return response.data;
-  } catch (error: any) {
-    console.error("Error in login:", error.response?.data || error.message);
-    throw error;
-  }
-};
+// export const login = async (data: LoginData) => {
+//   try {
+//     const response = await axiosInstance.post("/login", data);
+//     return response.data;
+//   } catch (error: any) {
+//     console.error("Error in login:", error.response?.data || error.message);
+//     throw error;
+//   }
+// };
 
-export const getRoleAuthUser = async () => {
-  try {
-    const response = await axiosInstance.get("/auth-user");
-    return response.data;
-  } catch (error: any) {
-    console.error("Error in getRoleAuthUser:", error.response?.data || error.message);
-    throw error;
-  }
-};
+// export const getRoleAuthUser = async () => {
+//   try {
+//     const response = await axiosInstance.get("/auth-user");
+//     return response.data;
+//   } catch (error: any) {
+//     console.error("Error in getRoleAuthUser:", error.response?.data || error.message);
+//     throw error;
+//   }
+// };
 
-export const logout = async () => {
-  try {
-    const response = await axiosInstance.post("/logout");
-    localStorage.removeItem("token");
-    return response.data;
-  } catch (error: any) {
-    console.error("Error in logout:", error.response?.data || error.message);
-    throw error;
-  }
-};
+// export const logout = async () => {
+//   try {
+//     const response = await axiosInstance.post("/logout");
+//     localStorage.removeItem("token");
+//     return response.data;
+//   } catch (error: any) {
+//     console.error("Error in logout:", error.response?.data || error.message);
+//     throw error;
+//   }
+// };
 
-export const signup = async (data: SignupData) => {
-  try {
-    const response = await axiosInstance.post("/signup", data);
-    return response.data;
-  } catch (error: any) {
-    console.error("Error in signup:", error.response?.data || error.message);
-    throw error;
-  }
-};
+// export const signup = async (data: SignupData) => {
+//   try {
+//     const response = await axiosInstance.post("/signup", data);
+//     return response.data;
+//   } catch (error: any) {
+//     console.error("Error in signup:", error.response?.data || error.message);
+//     throw error;
+//   }
+// };
 
 export const getUserInfo = async (): Promise<User> => {
     try {
@@ -98,15 +98,15 @@ export const createUser = async (user: SignupData) => {
   }
 };
 
-export const deleteUser = async (id: string) => {
-  try {
-    const response = await axiosInstance.delete(`/${id}`);
-    return response.data;
-  } catch (error: any) {
-    console.error("Error in deleteUser:", error.response?.data || error.message);
-    throw error;
-  }
-};
+// export const deleteUser = async (id: string) => {
+//   try {
+//     const response = await axiosInstance.delete(`/${id}`);
+//     return response.data;
+//   } catch (error: any) {
+//     console.error("Error in deleteUser:", error.response?.data || error.message);
+//     throw error;
+//   }
+// };
 
 export const getUserById = async (id: string) => {
   try {
@@ -120,12 +120,12 @@ export const getUserById = async (id: string) => {
   }
 };
 
-export const updateUser = async (id: string, user: Partial<User>) => {
-  try {
-    const response = await axiosInstance.put(`/${id}`, user);
-    return response.data;
-  } catch (error: any) {
-    console.error("Error in updateUser:", error.response?.data || error.message);
-    throw error;
-  }
-};
+// export const updateUser = async (id: string, user: Partial<User>) => {
+//   try {
+//     const response = await axiosInstance.put(`/${id}`, user);
+//     return response.data;
+//   } catch (error: any) {
+//     console.error("Error in updateUser:", error.response?.data || error.message);
+//     throw error;
+//   }
+// };
