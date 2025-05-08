@@ -7,6 +7,70 @@
     },
     "paths": {
         "/api/drinks": {
+            "get": {
+                "tags": [
+                    "Drinks"
+                ],
+                "summary": "Get all drinks",
+                "operationId": "ddb6fc9531964572b2cab619fb082df6",
+                "responses": {
+                    "200": {
+                        "description": "List of drinks",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Sprite"
+                                                    },
+                                                    "ml": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 330
+                                                    },
+                                                    "price": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 5
+                                                    },
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-05-04T12:34:56Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-05-04T12:35:56Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Drinks"
