@@ -1,9 +1,9 @@
-import DrinkTable from "../app/components/drinks/DrinkTable";
-import Users from "../app/Pages/Users/page";
+import DrinkTable from "@/components/drinks/DrinkTable";
+
+import Users from "./users/page";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import './globals.css'
-import UsersPage from "./Pages/Users/page";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,8 +31,16 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+<<<<<<< HEAD
         <Users/>
         <DrinkTable/>
+=======
+
+        <Users/>
+        <DrinkTable/>
+       {/* <UserPage/>
+        <DrinkTable/> */}
+>>>>>>> 77ac2305194137c1a9d4e369c1170bcc2e21d84d
 
       </body>
     </html>
