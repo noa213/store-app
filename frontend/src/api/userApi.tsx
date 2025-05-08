@@ -9,27 +9,6 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-<<<<<<< HEAD:frontend/src/app/lib/api/userApi.tsx
-=======
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
-
-export interface LoginData {
-  email: string;
-  password: string;
-}
-
-export interface SignupData {
-  name: string;
-  email: string;
-  password: string;
-}
-
->>>>>>> 77ac2305194137c1a9d4e369c1170bcc2e21d84d:frontend/src/api/userApi.tsx
 export const login = async (data: LoginData) => {
   try {
     const response = await axiosInstance.post("/login", data);
