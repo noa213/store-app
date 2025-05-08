@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import CategoriesTable from "@/app/components/categories/CategoriesTable";
-import AddCategoryForm from "@/app/components/categories/AddCategoryForm";
-import EditCategoryForm from '@/app/components/categories/EditCategoryForm';
-import { getAllCategories, addCategory, updateCategory, deleteCategory } from "@/app/lib/api/categoryApi";
-import { Category } from "@/app/types/category";
+import CategoriesTable from "@/components/categories/CategoriesTable";
+import AddCategoryForm from "@/components/categories/AddCategoryForm";
+import EditCategoryForm from '@/components/categories/EditCategoryForm';
+import { getAllCategories, addCategory, updateCategory, deleteCategory } from "@/api/categoryApi";
+import { Category } from "@/types/category";
 
 const CategoriesPage = () => {
   console.log('render CategoriesPage')

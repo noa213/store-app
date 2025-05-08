@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getUsers, deleteUser, getUserInfo } from "@/app/lib/api/userApi";
+import { getUsers, deleteUser, getUserInfo } from "@/api/userApi";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

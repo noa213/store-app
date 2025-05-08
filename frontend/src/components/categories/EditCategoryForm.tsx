@@ -4,7 +4,7 @@ import { editCcategoryForm } from "@/validations/category";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { z } from "zod";
-import { Category } from "@/app/types/category";
+import { Category } from "@/types/category";
 
 type FormData = z.infer<typeof editCcategoryForm>;
 
