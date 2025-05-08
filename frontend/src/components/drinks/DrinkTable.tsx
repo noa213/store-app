@@ -1,17 +1,4 @@
 "use client";
-<<<<<<< HEAD
-import React from "react";
-
-const DrinkTable = () => {
-  const drinks = [
-    { _id: "1", name: "Coca Cola", ml: 500, price: 6.5 },
-    { _id: "2", name: "Sprite", ml: 330, price: 5.0 },
-    { _id: "3", name: "Fanta", ml: 500, price: 6.0 },
-  ];
-
-  return (
-    <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg">
-=======
 
 import React, { useEffect, useState } from "react";
 //import { getDrinks, deleteDrink } from "@/api/drinkApi";
@@ -70,7 +57,6 @@ const DrinkTable = () => {
   return (
     <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg">
       <ToastContainer />
->>>>>>> 174f0fe82835bae5c49874e9c547b2b7cb50043a
       <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Drinks Management</h2>
       <table className="w-full table-auto border-collapse border border-gray-300 shadow-sm rounded-lg">
         <thead className="bg-gray-100 text-gray-700">
@@ -78,26 +64,17 @@ const DrinkTable = () => {
             <th className="px-6 py-3 border-b border-gray-200 text-left">Name</th>
             <th className="px-6 py-3 border-b border-gray-200 text-left">Volume (ml)</th>
             <th className="px-6 py-3 border-b border-gray-200 text-left">Price</th>
-<<<<<<< HEAD
-          </tr>
-        </thead>
-        <tbody>
-          {drinks.map((drink) => (
-=======
             <th className="px-6 py-3 border-b border-gray-200 text-left">Actions</th>
           </tr>
         </thead>
         <tbody>
           {drinks.map((drink: any) => (
->>>>>>> 174f0fe82835bae5c49874e9c547b2b7cb50043a
             <tr key={drink._id} className="hover:bg-gray-50">
               <td className="px-6 py-4 border-b border-gray-200 text-gray-700">{drink.name}</td>
               <td className="px-6 py-4 border-b border-gray-200 text-gray-700">{drink.ml}</td>
               <td className="px-6 py-4 border-b border-gray-200 text-gray-700">
                 ${drink.price.toFixed(2)}
               </td>
-<<<<<<< HEAD
-=======
               <td className="px-6 py-4 border-b border-gray-200 flex items-center space-x-2">
                 <button
                   className="px-3 py-1 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded shadow"
@@ -118,13 +95,10 @@ const DrinkTable = () => {
                   Delete
                 </button>
               </td>
->>>>>>> 174f0fe82835bae5c49874e9c547b2b7cb50043a
             </tr>
           ))}
         </tbody>
       </table>
-<<<<<<< HEAD
-=======
       <div className="flex justify-between mt-6">
         <button
           className="px-6 py-3 text-white bg-gray-700 hover:bg-gray-800 font-medium text-sm rounded shadow"
@@ -139,7 +113,6 @@ const DrinkTable = () => {
           Add New Drink
         </button>
       </div>
->>>>>>> 174f0fe82835bae5c49874e9c547b2b7cb50043a
     </div>
   );
 };

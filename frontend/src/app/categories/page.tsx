@@ -3,11 +3,7 @@ import React, { useEffect, useState } from "react";
 import CategoriesTable from "@/components/categories/CategoriesTable";
 import AddCategoryForm from "@/components/categories/AddCategoryForm";
 import EditCategoryForm from '@/components/categories/EditCategoryForm';
-<<<<<<<< HEAD:frontend/src/app/CategoriesPage/page.tsx
-import { getAllCategories, addCategory, updateCategory, deleteCategory } from "@/lib/api/categoryApi";
-========
 import { getAllCategories, addCategory, updateCategory, deleteCategory } from "@/api/categoryApi";
->>>>>>>> 174f0fe82835bae5c49874e9c547b2b7cb50043a:frontend/src/app/categories/page.tsx
 import { Category } from "@/types/category";
 
 const CategoriesPage = () => {
