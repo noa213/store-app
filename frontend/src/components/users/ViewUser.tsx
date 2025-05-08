@@ -2,45 +2,42 @@
 
 import React, { useEffect, useState } from "react";
 import { getUserById } from "@/api/userApi";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { User } from "@/types/user";
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
-
-interface Props {
+type ViewUserProps = {
   userId: string;
-}
+  onClose: () => void;
+};
 
-const ViewUser: React.FC<Props> = ({ userId }) => {
+const ViewUser: React.FC<ViewUserProps> = ({ userId, onClose }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const data = await getUserById(userId);
-        setUser(data as User);
-      } catch (error: any) {
-        toast.error("Failed to load user");
+        const userData = await getUserById(userId);
+        setUser(userData as User);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
       }
     };
 
     fetchUser();
   }, [userId]);
 
-  if (!user) return <div>Loading...</div>;
+  if (!user) {
+    return <p>Loading user details...</p>;
+  }
 
   return (
-    <div className="max-w-xl mx-auto mt-10 bg-white p-6 shadow-lg rounded">
-      <ToastContainer />
-      <h2 className="text-2xl font-bold mb-4">User Details</h2>
+    <div>
+      <h2 className="text-xl font-bold mb-4">User Details</h2>
       <p><strong>Name:</strong> {user.name}</p>
       <p><strong>Email:</strong> {user.email}</p>
       <p><strong>Role:</strong> {user.role}</p>
+      <div>
+        <button onClick={onClose}>Close</button>
+      </div>
     </div>
   );
 };

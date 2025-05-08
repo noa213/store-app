@@ -1,26 +1,31 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { getUsers, getUserInfo } from "@/api/userApi";
+import { useRouter } from "next/navigation";
+import { getUsers, getUserInfo, deleteUser } from "@/api/userApi";
 import { toast, ToastContainer } from "react-toastify";
 import { User } from "@/types/user";
+import AddUser from "@/components/users/AddUser";
+import ViewUser from "@/components/users/ViewUser";
+import EditUser from "@/components/users/EditUser";
 import "react-toastify/dist/ReactToastify.css";
 
 const AllUsers = () => {
-
   const [users, setUsers] = useState<User[]>([]);
   const [authUser, setAuthUser] = useState<Partial<User>>({});
+  const [showAddUser, setShowAddUser] = useState(false);
+  const [showViewUser, setShowViewUser] = useState(false);
+  const [showEditUser, setShowEditUser] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const getAuthUser = async () => {
     try {
       const user = await getUserInfo();
       setAuthUser(user);
     } catch (error: any) {
-      console.error("Error fetching user info:", error.response?.data || error.message);
-      toast.error("Failed to fetch user info. Redirecting to Home Page.", { position: "top-right" });
+      toast.error("Failed to fetch user info.");
       router.push("/");
     }
   };
@@ -30,21 +35,8 @@ const AllUsers = () => {
       const data = await getUsers();
       setUsers(data);
     } catch (error: any) {
-      console.error("Error fetching users:", error.response?.data || error.message);
-      toast.error("Failed to fetch users.", { position: "top-right" });
+      toast.error("Failed to fetch users.");
     }
-  };
-
-
-  useEffect(() => {
-    if (searchParams.get("adduser")) {
-      toast.success("User added successfully!", { position: "top-right" });
-    } else if (searchParams.get("error")) {
-      toast.error(searchParams.get("error")!, { position: "top-right" });
-    }
-  }, [searchParams]);
-  type Props = {
-    refreshSignal?: boolean;
   };
 
   useEffect(() => {
@@ -52,45 +44,37 @@ const AllUsers = () => {
     fetchUsers();
   }, []);
 
-  // useEffect(() => {
-  //   if (refreshSignal) {
-  //     fetchUsers();
-  //   }
-  // }, [refreshSignal]);
-
-  useEffect(() => {
-    if (!searchParams) return;
-
-    if (searchParams.get("adduser")) {
-      toast.success("User added successfully!", { position: "top-right" });
-    } else if (searchParams.get("error")) {
-      toast.error(searchParams.get("error")!, { position: "top-right" });
+  const handleDelete = async (id: string) => {
+    // if (authUser.role !== "admin" && authUser.role !== "superadmin") return;
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      await deleteUser(id);
+      fetchUsers();
     }
-  }, [searchParams]);
+  };
 
-  // const handleDelete = async (id: string) => {
-  //   if (window.confirm("Are you sure you want to delete this user?")) {
-  //     try {
-  //       await deleteUser(id);
-  //       toast.success("User deleted successfully!", { position: "top-right" });
-  //       fetchUsers();
-  //     } catch (error: any) {
-  //       console.error("Error deleting user:", error.response?.data || error.message);
-  //       toast.error("Failed to delete user.", { position: "top-right" });
-  //     }
-  //   }
-  // };
+  const handleEdit = (id: string) => {
+    setSelectedUserId(id);
+    setShowEditUser(true);
+  };
 
   const handleView = (id: string) => {
-    router.push(`/users/${id}`);
+    setSelectedUserId(id);
+    setShowViewUser(true);
+  };
+
+  const handleCloseView = () => {
+    setShowViewUser(false);
+    setSelectedUserId(null);
   };
 
   return (
-    <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <div className="container mx-auto p-6">
       <ToastContainer />
-      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Users Management</h2>
-      <table className="w-full table-auto border-collapse border border-gray-300">
-        <thead className="bg-gray-100">
+      <h2 className="text-3xl font-bold mb-4">Users Management</h2>
+      <button onClick={() => setShowAddUser(true)} className="bg-green-500 px-4 py-2 text-white rounded">Add User</button>
+
+      <table className="w-full mt-4">
+        <thead>
           <tr>
             <th>Name</th>
             <th>Email</th>
@@ -108,40 +92,23 @@ const AllUsers = () => {
                 <button onClick={() => handleView(user.id)}>View</button>
                 {(authUser.role === "admin" || authUser.role === "superadmin") && (
                   <>
-                    {/* <button onClick={() => router.push(`/users/edit/${user._id}`)}>Edit</button>
-                    <button onClick={() => handleDelete(user._id)}>Delete</button> */}
-
+                    <button onClick={() => handleEdit(user.id)}>Edit</button>
+                    <button onClick={() => handleDelete(user.id)}>Delete</button>
                   </>
                 )}
+                 <button onClick={() => handleEdit(user.id)}>Edit</button>
+                 <button onClick={() => handleDelete(user.id)}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      <div className="flex justify-between mt-6">
-        <button
-          className="px-6 py-3 text-white bg-gray-700 hover:bg-gray-800 font-medium text-sm rounded shadow"
-          onClick={() => router.push("/")}
-        >
-          Back to Dashboard
-        </button>
-        <button
-          className="px-6 py-3 text-white bg-green-500 hover:bg-green-600 font-medium text-sm rounded shadow"
-          onClick={() => router.push("/")}
-        >
-          Add New User
-        </button>
-        {(authUser.role === "admin" || authUser.role === "superadmin") && (
-          <button
-            className="px-6 py-3 text-white bg-green-500 hover:bg-green-600 font-medium text-sm rounded shadow"
-            onClick={() => router.push("/users/add")}
-          >
-            Add New User
-          </button>
+      {showAddUser && <AddUser onClose={() => setShowAddUser(false)} onUserAdded={fetchUsers} />}
+      {showViewUser && selectedUserId && <ViewUser userId={selectedUserId} onClose={handleCloseView} />}
+      {showEditUser && selectedUserId && <EditUser userId={selectedUserId} onClose={() => setShowEditUser(false)} onUserUpdated={fetchUsers} />}
 
-        )}
-      </div>
+      <button onClick={() => router.push("/")} className="mt-4 bg-blue-500 px-4 py-2 text-white rounded">Back to Dashboard</button>
     </div>
   );
 };
