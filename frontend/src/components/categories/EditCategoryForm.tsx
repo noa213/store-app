@@ -1,12 +1,12 @@
 "use client";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { editCcategoryForm } from "@/validations/category";
+import { editCategoryForm } from "@/validations/category";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { z } from "zod";
-import { Category } from "@/app/types/category";
+import { Category } from "@/types/category";
 
-type FormData = z.infer<typeof editCcategoryForm>;
+type FormData = z.infer<typeof editCategoryForm>;
 
 interface EditCategoryFormProps {
   category: Category;
@@ -20,13 +20,14 @@ const EditCategoryForm: React.FC<EditCategoryFormProps> = ({
   handleUpdateCategory,
 }) => {
   console.log('render EditCategoryForm')
+  console.log(category)
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(editCcategoryForm),
+    resolver: zodResolver(editCategoryForm),
     defaultValues: {
       name: category.name,
       url_name: category.url_name,
@@ -38,6 +39,8 @@ const EditCategoryForm: React.FC<EditCategoryFormProps> = ({
   const [error, setError] = useState("");
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
+    console.log('onSubmit')
+    console.log(data)
     try {
       const updatedCategory = {
         ...category,

@@ -1,5 +1,5 @@
 import React from "react";
-import { Category } from "@/app/types/category";
+import { Category } from "@/types/category";
 import { IoTrashOutline } from "react-icons/io5";
 
 type Props = {
