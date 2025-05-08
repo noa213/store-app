@@ -31,16 +31,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-<<<<<<< HEAD
         <Users/>
         <DrinkTable/>
-=======
-
-        <Users/>
-        <DrinkTable/>
-       {/* <UserPage/>
-        <DrinkTable/> */}
->>>>>>> 77ac2305194137c1a9d4e369c1170bcc2e21d84d
 
       </body>
     </html>
