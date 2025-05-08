@@ -9,6 +9,19 @@ use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @OA\Schema(
+ *     schema="Category",
+ *     type="object",
+ *     title="Category",
+ *     required={"id", "name", "url_name", "info", "img_url"},
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="Category 1"),
+ *     @OA\Property(property="url_name", type="string", example="category-1"),
+ *     @OA\Property(property="info", type="string", example="This is a description of category 1"),
+ *     @OA\Property(property="img_url", type="string", example="https://via.placeholder.com/640x480.png/0000cc?text=category+1")
+ * )
+ */
 class CategoryController extends Controller
 {
 
@@ -20,65 +33,52 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     */
-
-    /**
-     * @swagger
-     * /categories:
-     *   get:
-     *     summary: Retrieve a list of categories
-     *     tags: [Category]
-     *     parameters:
-     *       - in: query
-     *         name: page
-     *         schema:
-     *           type: integer
-     *         description: The page number for pagination (optional)
-     *       - in: query
-     *         name: per_page
-     *         schema:
-     *           type: integer
-     *         description: The number of items per page (optional)
-     *     responses:
-     *       200:
-     *         description: Successfully retrieved the list of categories
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 data:
-     *                   type: array
-     *                   items:
-     *                     type: object
-     *                     properties:
-     *                       id:
-     *                         type: integer
-     *                         example: 1
-     *                       name:
-     *                         type: string
-     *                         example: "Category 1"
-     *                       url_name:
-     *                         type: string
-     *                         example: "category-1"
-     *                       info:
-     *                         type: string
-     *                         example: "This is a description of category 1"
-     *                       img_url:
-     *                         type: string
-     *                         example: "https://via.placeholder.com/640x480.png/0000cc?text=category+1"
-     *       500:
-     *         description: Internal server error while retrieving categories
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 msg:
-     *                   type: string
-     *                   description: Error message
-     *                   example: "Internal Server Error"
+     * @OA\Get(
+     *     path="/api/categories",
+     *     summary="Get all categories",
+     *     tags={"Category"},
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Page number",
+     *         required=false,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Items per page",
+     *         required=false,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="Category 1"),
+     *                     @OA\Property(property="url_name", type="string", example="category-1"),
+     *                     @OA\Property(property="info", type="string", example="Description..."),
+     *                     @OA\Property(property="img_url", type="string", example="https://example.com/image.jpg")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Server error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Internal Server Error")
+     *         )
+     *     )
+     * )
      */
     public function index(Request $request)
     {
@@ -87,75 +87,50 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/categories/{id}",
+     *     summary="Get category by ID",
+     *     tags={"Category"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="The ID of the category to retrieve",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Category found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 ref="#/components/schemas/Category"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Category not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Category not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Internal Server Error")
+     *         )
+     *     )
+     * )
      */
-
-    /**
-     * @swagger
-     * /categories:
-     *   post:
-     *     summary: Create a new category
-     *     tags: [Category]
-     *     security:
-     *       - bearerAuth: []  # If you're using JWT or Bearer Token for authentication, leave this
-     *     requestBody:
-     *       required: true
-     *       content:
-     *         application/json:
-     *           schema:
-     *             type: object
-     *             properties:
-     *               name:
-     *                 type: string
-     *                 example: "New Category"
-     *               url_name:
-     *                 type: string
-     *                 example: "new-category"
-     *               info:
-     *                 type: string
-     *                 example: "This is a description of the new category"
-     *               img_url:
-     *                 type: string
-     *                 example: "https://via.placeholder.com/640x480.png/0000cc?text=new+category+image"
-     *     responses:
-     *       200:
-     *         description: Successfully created the category
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 msg:
-     *                   type: string
-     *                   description: Success message
-     *                   example: "Category saved successfully in the system."
-     *       400:
-     *         description: Invalid category data provided
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 msg:
-     *                   type: string
-     *                   description: Error message
-     *                   example: "Invalid data provided for category creation"
-     *       500:
-     *         description: Internal server error while creating the category
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 msg:
-     *                   type: string
-     *                   description: Error message
-     *                   example: "Internal Server Error"
-     */
-    public function show($categoryId)
+    public function show($id)
     {
         try {
-            $category = $this->categoryService->getCategoryById($categoryId);
+            $category = $this->categoryService->getCategoryById($id);
             if (!$category) {
                 return response()->json(['msg' => 'Category not found'], response::HTTP_NOT_FOUND);
             }
@@ -176,72 +151,54 @@ class CategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @swagger
-     * /categories:
-     *   post:
-     *     summary: Create a new category
-     *     tags: [Category]
-     *     security:
-     *       - bearerAuth: []  # If you're using JWT or Bearer Token for authentication, leave this
-     *     requestBody:
-     *       required: true
-     *       content:
-     *         application/json:
-     *           schema:
-     *             type: object
-     *             properties:
-     *               name:
-     *                 type: string
-     *                 example: "New Category"
-     *               url_name:
-     *                 type: string
-     *                 example: "new-category"
-     *               info:
-     *                 type: string
-     *                 example: "This is a description of the new category"
-     *               img_url:
-     *                 type: string
-     *                 example: "https://via.placeholder.com/640x480.png/0000cc?text=new+category+image"
-     *     responses:
-     *       201:
-     *         description: Successfully created the category
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 msg:
-     *                   type: string
-     *                   description: Success message
-     *                   example: Category saved successfully in the system.
-     *                 id:
-     *                   type: integer
-     *                   description: The ID of the newly created category
-     *                   example: 1
-     *       400:
-     *         description: Invalid category data provided
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 msg:
-     *                   type: string
-     *                   description: Error message
-     *                   example: Invalid data provided for category creation
-     *       500:
-     *         description: Internal server error while creating the category
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 msg:
-     *                   type: string
-     *                   description: Error message
-     *                   example: Internal Server Error
+     * @OA\Post(
+     *     path="/api/categories",
+     *     summary="Create a new category",
+     *     tags={"Category"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "url_name", "info", "img_url"},
+     *             @OA\Property(property="name", type="string", example="new category"),
+     *             @OA\Property(property="url_name", type="string", example="new-category"),
+     *             @OA\Property(property="info", type="string", example="This is a new test category"),
+     *             @OA\Property(property="img_url", type="string", format="uri", example="https://via.placeholder.com/150")  
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Category saved successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Category saved successfully in the system.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="The given data was invalid."),
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="array",
+     *                     @OA\Items(type="string", example="The name field is required.")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Internal Server Error")
+     *         )
+     *     )
+     * )
      */
     public function store(StoreCategoryRequest $request)
     {
@@ -269,88 +226,77 @@ class CategoryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-
-    /**
-     * @swagger
-     * /categories/{id}:
-     *   put:
-     *     summary: Update a category by ID
-     *     tags: [Category]
-     *     security:
-     *       - bearerAuth: []  # If you're using JWT or Bearer Token for authentication, leave this
-     *     parameters:
-     *       - in: path
-     *         name: id
-     *         schema:
-     *           type: string
-     *         required: true
-     *         description: The ID of the category to update
-     *       - in: body
-     *         name: category
-     *         description: The category details to update
-     *         required: true
-     *         schema:
-     *           type: object
-     *           properties:
-     *             name:
-     *               type: string
-     *               example: "Updated Category Name"
-     *             url_name:
-     *               type: string
-     *               example: "updated-category-url"
-     *             info:
-     *               type: string
-     *               example: "Updated description of the category"
-     *             img_url:
-     *               type: string
-     *               example: "https://via.placeholder.com/640x480.png/0000cc?text=updated+category+image"
-     *     responses:
-     *       200:
-     *         description: Successfully updated the category
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 msg:
-     *                   type: string
-     *                   description: Success message
-     *                   example: Category updated successfully in the system
-     *       400:
-     *         description: Category ID not provided
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 msg:
-     *                   type: string
-     *                   description: Error message
-     *                   example: ID of category must be received
-     *       404:
-     *         description: Category not found
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 msg:
-     *                   type: string
-     *                   description: Error message
-     *                   example: Category not found
-     *       500:
-     *         description: Internal server error while updating the category
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 msg:
-     *                   type: string
-     *                   description: Error message
-     *                   example: Internal Server Error
+     * @OA\Put(
+     *     path="/api/categories/{id}",
+     *     summary="Update an existing category",
+     *     tags={"Category"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the category to update",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "url_name", "info", "img_url"},
+     *             @OA\Property(property="name", type="string", example="new category"),
+     *             @OA\Property(property="url_name", type="string", example="new-category"),
+     *             @OA\Property(property="info", type="string", example="This is a new test category"),
+     *             @OA\Property(property="img_url", type="string", format="uri", example="https://via.placeholder.com/150")  
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Category updated successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Category updated successfully in the system")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Missing category ID",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="id of category must be received")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Category not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Category not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="The given data was invalid."),
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="array",
+     *                     @OA\Items(type="string", example="The name field is required.")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Internal Server Error")
+     *         )
+     *     )
+     * )
      */
     public function update(UpdateCategoryRequest $request, $id)
     {
@@ -375,58 +321,42 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     */
-
-    /**
-     * @swagger
-     * /categories/{id}:
-     *   delete:
-     *     summary: Delete a category by ID
-     *     tags: [Category]
-     *     security:
-     *       - bearerAuth: []  # If you're using JWT or Bearer Token for authentication, leave this
-     *     parameters:
-     *       - in: path
-     *         name: id
-     *         schema:
-     *           type: string
-     *         required: true
-     *         description: The ID of the category to delete
-     *     responses:
-     *       200:
-     *         description: Successfully deleted the category
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 msg:
-     *                   type: string
-     *                   description: Success message
-     *                   example: Category deleted successfully in the system
-     *       400:
-     *         description: Category does not exist in the system
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 msg:
-     *                   type: string
-     *                   description: Error message
-     *                   example: Category does not exist in the system
-     *       500:
-     *         description: Internal server error while deleting the category
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 msg:
-     *                   type: string
-     *                   description: Error message
-     *                   example: Internal Server Error
+     * @OA\Delete(
+     *     path="/api/categories/{id}",
+     *     summary="Delete a category by its ID",
+     *     tags={"Category"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the category to delete",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Category deleted successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Category deleted successfully in the system")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Category does not exist",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Category does not exist in the system")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="msg", type="string", example="Internal Server Error")
+     *         )
+     *     )
+     * )
      */
     public function destroy($id)
     {

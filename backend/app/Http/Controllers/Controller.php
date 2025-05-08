@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 /**
  * @OA\Info(
  *     title="Store App API",
@@ -8,6 +9,7 @@ namespace App\Http\Controllers;
  *     description="API documentation for Store App"
  * )
  */
+
 abstract class Controller
 {
     //
