@@ -1,5 +1,5 @@
 import React from "react";
-import DrinkTable from "@/app/components/drinks/DrinkTable";
+import DrinkTable from "@/components/drinks/DrinkTable";
 
 const DrinkPage = () => {
   return (
