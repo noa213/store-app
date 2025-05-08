@@ -56,6 +56,32 @@ class DrinkController extends Controller
 
         return $this->drinkService->create($validatedData);
     }
+    /**
+     * @OA\Get(
+     *     path="/api/drinks",
+     *     summary="Get all drinks",
+     *     tags={"Drinks"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of drinks",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="array", @OA\Items(
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="Sprite"),
+     *                 @OA\Property(property="ml", type="number", format="float", example=330),
+     *                 @OA\Property(property="price", type="number", format="float", example=5.00),
+     *                 @OA\Property(property="user_id", type="integer", example=3),
+     *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-05-04T12:34:56Z"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2025-05-04T12:35:56Z")
+     *             ))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error"
+     *     )
+     * )
+     */
 
     public function index(): JsonResponse
     {
