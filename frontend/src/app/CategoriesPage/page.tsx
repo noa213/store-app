@@ -90,7 +90,7 @@ const CategoriesPage = () => {
       {selectedCategory && (
         <div className="mt-8 flex justify-center">
           <EditCategoryForm category={selectedCategory}
-                        closePopup={() => setIsAddCategory(false)}
+                        closePopup={() => setSelectedCategory(null)}
                         handleUpdateCategory={handleUpdateCategory} />
         </div>
       )}
