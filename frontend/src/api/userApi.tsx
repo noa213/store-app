@@ -95,7 +95,7 @@ export const getUserById = async (id: string) => {
     const url = `/${id}`;
     console.log("Requesting URL:", axiosInstance.defaults.baseURL + url);
     const response = await axiosInstance.get(url);
-    return response.data;
+    return response.data  as User;
   } catch (error: any) {
     console.error("Error in getUserById:", error.response?.data || error.message);
     throw error;

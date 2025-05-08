@@ -1,68 +1,65 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { getUserById, updateUser } from "@/api/userApi";
+import React, { useState, useEffect } from "react";
+import { updateUser, getUserById } from "@/api/userApi";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// טיפוס עבור המשתמש
-interface UserData {
-  name: string;
-  email: string;
-  role: string;
+interface EditUserProps {
+  userId: string;
+  onClose: () => void;
+  onUserUpdated: () => void;
 }
 
-export default function EditUser() {
-  const router = useRouter();
-  const params = useParams();
-  const id = params?.id as string;
-  const [user, setUser] = useState<UserData>({ name: "", email: "", role: "" });
+const EditUser: React.FC<EditUserProps> = ({ userId, onClose, onUserUpdated }) => {
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    role: "",
+    password: "",
+  });
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const data = await getUserById(id);
-
-        if (
-          typeof data === "object" &&
-          data !== null &&
-          "name" in data &&
-          "email" in data &&
-          "role" in data
-        ) {
-          setUser(data as UserData);
-        } else {
-          throw new Error("Invalid user data from server");
-        }
+        const userData = await getUserById(userId);
+        setUser({
+          name: userData.name,
+          email: userData.email,
+          role: userData.role,
+          password: "", // לא נרצה להציג את הסיסמה
+        });
       } catch (error: any) {
-        toast.error("Failed to load user", { position: "top-right" });
-        router.push("/users?error=notfound");
+        console.error("Error fetching user data:", error.response?.data || error.message);
+        toast.error("Failed to fetch user data.", { position: "top-right" });
       }
     };
 
-    if (id) fetchUser();
-  }, [id, router]);
+    if (userId) {
+      fetchUser();
+    }
+  }, [userId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setUser((prevUser) => ({ ...prevUser, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await updateUser(id, user);
+      await updateUser(userId, user);
       toast.success("User updated successfully!", { position: "top-right" });
-      router.push("/users");
+      onUserUpdated(); // Refresh the user list
+      onClose();
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to update user", {
-        position: "top-right",
-      });
+      console.error("Error updating user:", error.response?.data || error.message);
+      toast.error("Failed to update user.", { position: "top-right" });
     }
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 bg-white p-6 shadow-lg rounded">
+    <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded relative">
       <ToastContainer />
       <h2 className="text-2xl font-bold mb-4">Edit User</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -71,33 +68,57 @@ export default function EditUser() {
           name="name"
           value={user.name}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          placeholder="Name"
           required
+          className="w-full p-2 border border-gray-300 rounded"
         />
         <input
           type="email"
           name="email"
           value={user.email}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          placeholder="Email"
           required
+          className="w-full p-2 border border-gray-300 rounded"
         />
         <select
           name="role"
           value={user.role}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
           required
+          className="w-full p-2 border border-gray-300 rounded"
         >
-          <option value="">Select role</option>
+          <option value="">Select Role</option>
           <option value="user">User</option>
           <option value="admin">Admin</option>
-          <option value="superadmin">Superadmin</option>
+          <option value="superadmin">Super Admin</option>
         </select>
-        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded">
-          Update User
-        </button>
+        <input
+          type="password"
+          name="password"
+          value={user.password}
+          onChange={handleChange}
+          placeholder="Password (leave empty to keep current password)"
+          className="w-full p-2 border border-gray-300 rounded"
+        />
+        <div className="flex justify-between">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Save Changes
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );
-}
+};
+
+export default EditUser;

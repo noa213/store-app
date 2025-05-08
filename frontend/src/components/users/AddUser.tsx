@@ -6,7 +6,12 @@ import { createUser } from "@/api/userApi";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function AddUser() {
+interface AddUserProps {
+  onClose: () => void;
+  onUserAdded?: () => void;
+}
+
+const AddUser: React.FC<AddUserProps> = ({ onClose, onUserAdded }) => {
   const router = useRouter();
   const [user, setUser] = useState({
     name: "",
@@ -15,7 +20,9 @@ export default function AddUser() {
     password: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setUser((prevUser) => ({ ...prevUser, [name]: value }));
   };
@@ -25,8 +32,13 @@ export default function AddUser() {
     try {
       await createUser(user);
       toast.success("User added successfully!", { position: "top-right" });
-      setUser({ name: "", email: "", role: "", password: "" }); // reset form
-      router.push("/users?adduser=true");
+      setUser({ name: "", email: "", role: "", password: "" });
+
+      if (onUserAdded) {
+        onUserAdded();
+      } else {
+        router.push("/users?adduser=true");
+      }
     } catch (error: any) {
       console.error("Error adding user:", error.response?.data || error.message);
       toast.error("Failed to add user.", { position: "top-right" });
@@ -84,15 +96,13 @@ export default function AddUser() {
           >
             Add User
           </button>
-          <button
-            type="button"
-            onClick={() => router.push("/users")}
-            className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
-          >
-            Cancel
-          </button>
+          <div>
+            <button onClick={onClose}>Close</button>
+          </div>
         </div>
       </form>
     </div>
   );
-}
+};
+
+export default AddUser;
