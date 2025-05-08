@@ -2,28 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-<<<<<<< HEAD:frontend/src/app/components/users/AllUsers.tsx
-import { getUsers, getUserInfo } from "@/app/lib/api/userApi";
-=======
-import { getUsers, deleteUser, getUserInfo } from "@/api/userApi";
->>>>>>> 77ac2305194137c1a9d4e369c1170bcc2e21d84d:frontend/src/components/users/AllUsers.tsx
+import { getUsers, getUserInfo } from "@/api/userApi";
 import { toast, ToastContainer } from "react-toastify";
-import { User } from "../../../types/user";
+import { User } from "@/types/user";
 import "react-toastify/dist/ReactToastify.css";
 
-<<<<<<< HEAD:frontend/src/app/components/users/AllUsers.tsx
-const AllUsers = () => {
-=======
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  role: string;
-}
-
 const AllUsers = () => {
 
->>>>>>> 77ac2305194137c1a9d4e369c1170bcc2e21d84d:frontend/src/components/users/AllUsers.tsx
   const [users, setUsers] = useState<User[]>([]);
   const [authUser, setAuthUser] = useState<Partial<User>>({});
   const router = useRouter();
@@ -49,15 +34,7 @@ const AllUsers = () => {
       toast.error("Failed to fetch users.", { position: "top-right" });
     }
   };
-<<<<<<< HEAD:frontend/src/app/components/users/AllUsers.tsx
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      getAuthUser();
-      fetchUsers();
-    }
-  }, []);
-=======
 
   useEffect(() => {
     if (searchParams.get("adduser")) {
@@ -80,7 +57,6 @@ const AllUsers = () => {
   //     fetchUsers();
   //   }
   // }, [refreshSignal]);
->>>>>>> 77ac2305194137c1a9d4e369c1170bcc2e21d84d:frontend/src/components/users/AllUsers.tsx
 
   useEffect(() => {
     if (!searchParams) return;
@@ -124,7 +100,6 @@ const AllUsers = () => {
         </thead>
         <tbody>
           {users.map((user) => (
-<<<<<<< HEAD:frontend/src/app/components/users/AllUsers.tsx
             <tr key={user.id}>
               <td>{user.name}</td>
               <td>{user.email}</td>
@@ -135,33 +110,7 @@ const AllUsers = () => {
                   <>
                     {/* <button onClick={() => router.push(`/users/edit/${user._id}`)}>Edit</button>
                     <button onClick={() => handleDelete(user._id)}>Delete</button> */}
-=======
-            <tr key={user._id} className="hover:bg-gray-50">
-              <td className="px-6 py-4 border-b border-gray-200 text-gray-700">{user.name}</td>
-              <td className="px-6 py-4 border-b border-gray-200 text-gray-700">{user.email}</td>
-              <td className="px-6 py-4 border-b border-gray-200 text-gray-700">{user.role}</td>
-              <td className="px-6 py-4 border-b border-gray-200 flex flex-wrap gap-2">
-                <button
-                  className="px-3 py-1 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded shadow"
-                  onClick={() => handleView(user._id)}
-                >
-                  View
-                </button>
-                {(authUser.role === "admin" || authUser.role === "superadmin") && (
-                  <>
-                    <button
-                      className="px-3 py-1 text-sm font-medium text-white bg-green-500 hover:bg-green-600 rounded shadow"
-                      onClick={() => handleEdit(user._id)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="px-3 py-1 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded shadow"
-                      onClick={() => handleDelete(user._id)}
-                    >
-                      Delete
-                    </button>
->>>>>>> 77ac2305194137c1a9d4e369c1170bcc2e21d84d:frontend/src/components/users/AllUsers.tsx
+
                   </>
                 )}
               </td>
@@ -169,8 +118,7 @@ const AllUsers = () => {
           ))}
         </tbody>
       </table>
-<<<<<<< HEAD:frontend/src/app/components/users/AllUsers.tsx
-=======
+
       <div className="flex justify-between mt-6">
         <button
           className="px-6 py-3 text-white bg-gray-700 hover:bg-gray-800 font-medium text-sm rounded shadow"
@@ -194,7 +142,6 @@ const AllUsers = () => {
 
         )}
       </div>
->>>>>>> 77ac2305194137c1a9d4e369c1170bcc2e21d84d:frontend/src/components/users/AllUsers.tsx
     </div>
   );
 };
