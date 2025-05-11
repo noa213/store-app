@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { notFound } from 'next/navigation';
 import { getProductById } from '@/api/productApi';
 import { Product } from '@/types/product';
+import { GiSkeleton } from 'react-icons/gi';
+// import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProductDetails() {
     const { id } = useParams();
@@ -33,9 +35,9 @@ export default function ProductDetails() {
 
         fetchProduct();
     }, [id]);
-
-    if (loading) return <p className="text-center mt-10 text-gray-500">טוען מוצר...</p>;
-    if (!product) return <p className="text-center mt-10 text-red-500">המוצר לא נמצא</p>;
+    
+    if (loading) return <p className="text-center mt-10 text-gray-500">Loading product...</p>;
+    if (!product) return <p className="text-center mt-10 text-red-500">Product not found</p>;
 
     return (
         <main className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg mt-8">
@@ -43,7 +45,7 @@ export default function ProductDetails() {
                 onClick={() => router.back()}
                 className="mb-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
             >
-                ← חזרה
+                ← Back to Producs Management
             </button>
 
             <div className="flex flex-col md:flex-row gap-6">
