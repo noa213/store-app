@@ -53,7 +53,7 @@ const ProductTable = () => {
     };
 
     const handleEdit = (id: number) => {
-        router.push(`/products/edit/${id}`);
+        router.push(`/products/edit?id=${id}`);
     };
 
     const handleView = (id: number) => {

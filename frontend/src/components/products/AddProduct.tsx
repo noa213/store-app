@@ -37,6 +37,10 @@ const AddProduct = () => {
     }
   };
 
+  const handleCancel = () => {
+    router.push('/products');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <form
@@ -97,6 +101,13 @@ const AddProduct = () => {
         >
           {loading ? 'Saving...' : 'Save Product'}
         </button>
+        <button
+            type="button"
+            onClick={handleCancel}
+            className="flex-1 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100"
+          >
+            Cancel
+          </button>
       </form>
     </div>
   );

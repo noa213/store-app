@@ -158,15 +158,15 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         try {
-            // $user = auth()->user();
-            // if (!$user) {
-            //     return response()->json([
-            //         'msg' => 'User not authenticated'
-            //     ], Response::HTTP_UNAUTHORIZED);
-            // }
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'msg' => 'User not authenticated'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
 
-            // $this->productService->createProduct($request->validated(), $user->id);
-            $this->productService->createProduct($request->validated(), 3);
+            $this->productService->createProduct($request->validated(), $user->id);
+            // $this->productService->createProduct($request->validated(), 3);
 
             return response()->json([
                 'msg' => 'Product created successfully'
