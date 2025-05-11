@@ -73,7 +73,11 @@ class ProductController extends Controller
     {
         try {
             $products = $this->productService->getProductsList($request->query());
-            return response()->json(['data' => $products], Response::HTTP_OK);
+            return response()->json([
+                'products' => $products->items(),
+                'current_page' => $products->currentPage(),
+                'total_pages' => $products->lastPage()
+            ], Response::HTTP_OK);
         } catch (\Exception $e) {
             \Log::error("Error in ProductController@index: " . $e->getMessage());
             return response()->json(['msg' => 'Internal Server Error'], Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -228,7 +232,7 @@ class ProductController extends Controller
      *     )
      * )
      */
-    public function show($id)
+    public function show($id)   
     {
         try {
             $product = $this->productService->getProductById($id);
@@ -239,9 +243,11 @@ class ProductController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             }
 
-            return response()->json([
-                'data' => $product
-            ], Response::HTTP_OK);
+            return response()->json(
+                $product
+                ,
+                Response::HTTP_OK
+            );
         } catch (\Exception $e) {
             \Log::error("Error from getProductById: " . $e->getMessage());
 

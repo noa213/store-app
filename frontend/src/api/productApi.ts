@@ -1,13 +1,19 @@
-import { Product } from "@/types/product";
+import { Product, ProductsResponse } from "@/types/product";
 import axios from "axios";
 
-const BASE_URL = "/api/products";
+const BASE_URL = "http://localhost:8000/api/products";
 
-export const getProducts = async (): Promise<{ data: Product[] }> => {
-    return axios.get(BASE_URL);
+export const getProducts = async (): Promise<ProductsResponse> => {
+    const res = await axios.get<ProductsResponse>(BASE_URL);
+    return res.data;
+};
+export const getProductById = async (id: number): Promise<Product> => {
+    const res = await axios.get<Product>(`${BASE_URL}/${id}`);
+    // console.log(res.data)
+    return res.data;
 };
 
-export const deleteProduct = (id: string) => {
+export const deleteProduct = (id: number) => {
     return axios.delete(`${BASE_URL}/${id}`);
 };
 
