@@ -41,13 +41,17 @@ Route::prefix('drinks')->group(function () {
     Route::get('/user/{userId}', [DrinkController::class, 'getByUserId']);
 });
 
-Route::prefix('categories')->group(function () {
-    Route::get('/', [CategoryController::class, 'index']); 
-    Route::get('/{id}', [CategoryController::class, 'show']);   
-    Route::post('/', [CategoryController::class, 'store']);    
-    Route::put('/{id}', [CategoryController::class, 'update']); 
-    Route::delete('/{id}', [CategoryController::class, 'destroy']); 
+Route::controller(CategoryController::class)
+    ->prefix('/categories')
+    ->middleware(['auth:api'])
+    ->group(function () {
+        Route::get('/', 'index');
+        Route::get('/{id}', 'show');
+        Route::post('/', 'store');
+        Route::put('/', 'update');
+        Route::delete('/{id}', 'destroy');
 });
+
 Route::prefix('products')->group(function () {
     Route::get('/', [ProductController::class, 'index']); 
     Route::get('/{id}', [ProductController::class, 'show']);   
