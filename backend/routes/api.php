@@ -1,11 +1,20 @@
 <?php
-
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DrinkController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/refresh', [AuthController::class, 'refreshToken']);
+
+Route::group(['middleware' => ['auth:api']], function () {
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
 
 Route::prefix('users')->group(function () {
     Route::post('/', [UserController::class, 'store']);    
