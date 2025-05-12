@@ -7,8 +7,8 @@ import { getProductById, updateProduct } from '@/api/productApi';
 const EditProduct = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const productId = searchParams.get('id'); // נניח שה-ID מגיע ב-query param כמו ?id=123
-
+    const productId = searchParams.get('id');
+    
     const [formData, setFormData] = useState({
         name: '',
         price: '',
