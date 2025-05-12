@@ -1,6 +1,6 @@
-import axios from "axios";
+import { axiosInstance } from '@/lib/http';
 
-const API_URL = "http://localhost:8000/api/drinks";
+const API_URL = "/drinks";
 
 interface Drink {
     id: string;
@@ -16,16 +16,18 @@ interface Drink {
 // };
 
 export const addDrink = async (drink: { name: string; price: number }) => {
-  const response = await axios.post(API_URL, drink);
+  const response = await axiosInstance.post(API_URL, drink);
   return response.data;
 };
 
 export const deleteDrink = async (id: string) => {
-  const response = await axios.delete(`${API_URL}/${id}`);
+  const response = await axiosInstance.delete(`${API_URL}/${id}`);
   return response.data;
 };
 
 export const updateDrink = async (id: string, updatedDrink: { name: string; price: number }) => {
-  const response = await axios.put(`${API_URL}/${id}`, updatedDrink);
+  const response = await axiosInstance.put(`${API_URL}/${id}`, updatedDrink);
   return response.data;
 };
+
+

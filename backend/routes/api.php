@@ -16,7 +16,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-Route::prefix('users')->group(function () {
+Route::prefix('users')->middleware('auth:api')->group(function () {
     Route::post('/', [UserController::class, 'store']);    
     Route::get('/', [UserController::class, 'index']);       
     Route::get('/{id}', [UserController::class, 'show']);   
@@ -31,8 +31,7 @@ Route::prefix('users')->group(function () {
     Route::get('/role/auth', [UserController::class, 'getRoleAuthUser']);
 });
 
-
-Route::prefix('drinks')->group(function () {
+Route::prefix('drinks')->middleware('auth:api')->group(function () {
     Route::post('/', [DrinkController::class, 'store']);    
     Route::get('/', [DrinkController::class, 'index']);       
     Route::get('/{id}', [DrinkController::class, 'show']);   
@@ -52,7 +51,7 @@ Route::controller(CategoryController::class)
         Route::delete('/{id}', 'destroy');
 });
 
-Route::prefix('products')->group(function () {
+Route::prefix('products')->middleware('auth:api')->group(function () {
     Route::get('/', [ProductController::class, 'index']); 
     Route::get('/{id}', [ProductController::class, 'show']);   
     Route::get('/by-user/{userId}', [ProductController::class, 'showByUserId']);   

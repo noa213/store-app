@@ -1,17 +1,9 @@
-import axios from "axios";
-
+import { axiosInstance } from '@/lib/http';
 import { User, LoginData, SignupData } from '@/types/user';
-const API_URL = "http://localhost:8000/api/users";
-
-
-const axiosInstance = axios.create({
-  baseURL: API_URL,
-  withCredentials: true,
-});
 
 export const login = async (data: LoginData) => {
   try {
-    const response = await axiosInstance.post("/login", data);
+    const response = await axiosInstance.post("/users/login", data);
     return response.data;
   } catch (error: any) {
     console.error("Error in login:", error.response?.data || error.message);
@@ -21,7 +13,7 @@ export const login = async (data: LoginData) => {
 
 export const getRoleAuthUser = async () => {
   try {
-    const response = await axiosInstance.get("/auth-user");
+    const response = await axiosInstance.get("/users/auth-user");
     return response.data;
   } catch (error: any) {
     console.error("Error in getRoleAuthUser:", error.response?.data || error.message);
@@ -31,7 +23,7 @@ export const getRoleAuthUser = async () => {
 
 export const logout = async () => {
   try {
-    const response = await axiosInstance.post("/logout");
+    const response = await axiosInstance.post("/users/logout");
     localStorage.removeItem("token");
     return response.data;
   } catch (error: any) {
@@ -42,7 +34,7 @@ export const logout = async () => {
 
 export const signup = async (data: SignupData) => {
   try {
-    const response = await axiosInstance.post("/signup", data);
+    const response = await axiosInstance.post("/users/signup", data);
     return response.data;
   } catch (error: any) {
     console.error("Error in signup:", error.response?.data || error.message);
@@ -52,7 +44,7 @@ export const signup = async (data: SignupData) => {
 
 export const getUserInfo = async (): Promise<User> => {
     try {
-      const response = await axiosInstance.get<User>("");
+      const response = await axiosInstance.get<User>("/users");
       return response.data;
     } catch (error: any) {
       console.error("Error in getUserInfo:", error.response?.data || error.message);
@@ -62,7 +54,7 @@ export const getUserInfo = async (): Promise<User> => {
 
 export const getUsers = async (): Promise<User[]> => {
     try {
-      const response = await axiosInstance.get<User[]>("");
+      const response = await axiosInstance.get<User[]>("/users");
       return response.data;
     } catch (error: any) {
       console.error("Error in getUsers:", error.response?.data || error.message);
@@ -72,7 +64,7 @@ export const getUsers = async (): Promise<User[]> => {
   
 export const createUser = async (user: SignupData) => {
   try {
-    const response = await axiosInstance.post("/", user);
+    const response = await axiosInstance.post("/users", user);
     return response.data;
   } catch (error: any) {
     console.error("Error in addUser:", error.response?.data || error.message);
@@ -82,7 +74,7 @@ export const createUser = async (user: SignupData) => {
 
 export const deleteUser = async (id: string) => {
   try {
-    const response = await axiosInstance.delete(`/${id}`);
+    const response = await axiosInstance.delete(`/users/${id}`);
     return response.data;
   } catch (error: any) {
     console.error("Error in deleteUser:", error.response?.data || error.message);
@@ -92,7 +84,7 @@ export const deleteUser = async (id: string) => {
 
 export const getUserById = async (id: string) => {
   try {
-    const url = `/${id}`;
+    const url = `/users/${id}`;
     console.log("Requesting URL:", axiosInstance.defaults.baseURL + url);
     const response = await axiosInstance.get(url);
     return response.data;
@@ -104,7 +96,7 @@ export const getUserById = async (id: string) => {
 
 export const updateUser = async (id: string, user: Partial<User>) => {
   try {
-    const response = await axiosInstance.put(`/${id}`, user);
+    const response = await axiosInstance.put(`/users/${id}`, user);
     return response.data;
   } catch (error: any) {
     console.error("Error in updateUser:", error.response?.data || error.message);

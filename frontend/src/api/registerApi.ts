@@ -1,9 +1,9 @@
-import { http } from '@/lib/http';
-import { User, LoginData, SignupData2 } from '@/types/user';
+import { axiosInstance } from '@/lib/http';
+import { LoginData, SignupData2 } from '@/types/user';
 
 export const register = async (user: SignupData2) => {
     try {
-        const response = await http.post<any>("/register", user);
+        const response = await axiosInstance.post<any>("/register", user);
 
         const token = response.data.data.token;
         localStorage.setItem("token", token); 
@@ -17,7 +17,7 @@ export const register = async (user: SignupData2) => {
 
 export const login = async (data: LoginData) => {
     try {
-        const response = await http.post<any>("/login", data);
+        const response = await axiosInstance.post<any>("/login", data);
 
         const token = response.data.data.token;
         localStorage.setItem("token", token); 
@@ -31,7 +31,7 @@ export const login = async (data: LoginData) => {
 
 export const logout = async () => {
   try {
-    const response = await http.post("/logout");
+    const response = await axiosInstance.post("/logout");
 
     localStorage.removeItem("token");
     console.log(response)
