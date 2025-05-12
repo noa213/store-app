@@ -28,9 +28,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-        <div className="text-red-500 bg-yellow-100 p-4">
-          בדיקת Tailwind
-        </div>
       </body>
     </html>
   );

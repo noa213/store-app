@@ -7,7 +7,6 @@ import { getAllCategories, addCategory, updateCategory, deleteCategory } from "@
 import { Category } from "@/types/category";
 
 const CategoriesPage = () => {
-  console.log('render CategoriesPage')
 
   const [isAddCategory, setIsAddCategory] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
