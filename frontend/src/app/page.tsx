@@ -1,8 +1,8 @@
 'use client';
 import React, { useState } from "react";
-import SignUp from "@/components/register/SignUp";
-import Login from "@/components/register/Login";
-import { register, login, logout } from "@/api/registerApi";
+import SignUp from "@/components/auth/SignUp";
+import Login from "@/components/auth/Login";
+import { register, login, logout } from "@/api/authApi";
 
 export default function Home() {
   const [isSignUp, setIsSignUp] = useState<boolean>(false);

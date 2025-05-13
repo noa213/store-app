@@ -16,7 +16,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-Route::prefix('users')->middleware('auth:api')->group(function () {
+Route::prefix('users')->middleware(['auth:api', 'auth.admin'])->group(function () {
     Route::post('/', [UserController::class, 'store']);    
     Route::get('/', [UserController::class, 'index']);       
     Route::get('/{id}', [UserController::class, 'show']);   
@@ -46,6 +46,12 @@ Route::controller(CategoryController::class)
     ->group(function () {
         Route::get('/', 'index');
         Route::get('/{id}', 'show');
+});
+
+Route::controller(CategoryController::class)
+    ->prefix('/categories')
+    ->middleware(['auth:api', 'auth.admin'])
+    ->group(function () {
         Route::post('/', 'store');
         Route::put('/', 'update');
         Route::delete('/{id}', 'destroy');
@@ -57,6 +63,8 @@ Route::prefix('products')->middleware('auth:api')->group(function () {
     Route::get('/by-user/{userId}', [ProductController::class, 'showByUserId']);   
     Route::post('/', [ProductController::class, 'store']);    
     Route::put('/{id}', [ProductController::class, 'update']); 
-    Route::delete('/{id}', [ProductController::class, 'destroy']); 
 });
 
+Route::prefix('products')->middleware(['auth:api', 'auth.admin'])->group(function () {
+    Route::delete('/{id}', [ProductController::class, 'destroy']); 
+});

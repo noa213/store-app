@@ -182,14 +182,15 @@
                                     "email"
                                 ],
                                 "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "John Doe"
-                                    },
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "john@example.com"
+                                        "example": "user@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "123456"
                                     }
                                 },
                                 "type": "object"
@@ -226,11 +227,11 @@
                                                         },
                                                         "name": {
                                                             "type": "string",
-                                                            "example": "John Doe"
+                                                            "example": "user"
                                                         },
                                                         "email": {
                                                             "type": "string",
-                                                            "example": "john@example.com"
+                                                            "example": "user@gmail.com"
                                                         },
                                                         "role": {
                                                             "type": "string",
