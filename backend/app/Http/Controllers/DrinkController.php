@@ -267,7 +267,8 @@ class DrinkController extends Controller
             }
 
             return response()->json([
-                'msg' => 'Drink updated successfully'
+                'msg' => 'Drink updated successfully',
+                'updated_data' => $drink
             ], Response::HTTP_OK);
         } catch (\Exception $e) {
             \Log::error('Error updating drink: ' . $e->getMessage());

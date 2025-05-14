@@ -11,19 +11,19 @@ class DrinkService
 {
     public function create(array $data)
     {
-        $user = Auth::user();
+        // $user = Auth::user();
 
-        if (!$user) {
-            return response()->json([
-                'msg' => 'User not authenticated',
-            ], Response::HTTP_UNAUTHORIZED);
-        }
+        // if (!$user) {
+        //     return response()->json([
+        //         'msg' => 'User not authenticated',
+        //     ], Response::HTTP_UNAUTHORIZED);
+        // }
 
         $drink = Drink::create([
             'name' => $data['name'],
             'ml' => $data['ml'],
             'price' => $data['price'],
-            'user_id' => $user->id,
+            'user_id' => /*$user->id*/ 2, 
         ]);
 
         return response()->json([
@@ -115,7 +115,6 @@ class DrinkService
         }
 
         $drink->update($data);
-
         return $drink;
     }
 

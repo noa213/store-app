@@ -1,33 +1,83 @@
-import { axiosInstance } from '@/lib/http';
 
-const API_URL = "/drinks";
+import { Drink } from '@/types/drink';
+import axiosInstance from "./axiosInstance";
 
-interface Drink {
-    id: string;
+
+
+export const getDrinks = async (): Promise<Drink[]> => {
+    try {
+      const response = await axiosInstance.get<{ data: Drink[] }>("/drinks");
+      return response.data.data; 
+    } catch (error: any) {
+      console.error("Error in getDrinks:", error.response?.data || error.message);
+      throw error;
+    }
+  };
+
+  export const getDrinkById = async (drinkId: string): Promise<Drink> => {
+    try {
+      const response = await axiosInstance.get<{ data: Drink }>(`/drinks/${drinkId}`);
+      return response.data.data;
+    } catch (error: any) {
+      console.error("Error in getDrinksById:", error.response?.data || error.message);
+      throw error;
+    }
+  };
+
+  export const getDrinksByUserId = async (userId: string): Promise<Drink> => {
+    try {
+      const response = await axiosInstance.get<{ data: Drink }>(`/drinks/user/${userId}`);
+      return response.data.data;
+    } catch (error: any) {
+      console.error("Error in getDrinksByUserId:", error.response?.data || error.message);
+      throw error;
+    }
+  };
+
+  export const createDrink = async (formData: {
     name: string;
-    ml: number;
-    price: number;
-    user_id: string;
-  }
-
-// export const getDrinks = async (): Promise<{ data: Drink[] }> => {
-//   const response = await axios.get(API_URL);
-//   return response.data;
-// };
-
-export const addDrink = async (drink: { name: string; price: number }) => {
-  const response = await axiosInstance.post(API_URL, drink);
-  return response.data;
-};
-
-export const deleteDrink = async (id: string) => {
-  const response = await axiosInstance.delete(`${API_URL}/${id}`);
-  return response.data;
-};
-
-export const updateDrink = async (id: string, updatedDrink: { name: string; price: number }) => {
-  const response = await axiosInstance.put(`${API_URL}/${id}`, updatedDrink);
-  return response.data;
-};
-
-
+    ml: string;
+    price: string;
+  }): Promise<Drink> => {
+    try {
+      const response = await axiosInstance.post<{ data: Drink }>("/drinks", {
+        name: formData.name,
+        ml: parseFloat(formData.ml),
+        price: parseFloat(formData.price),
+      });
+      return response.data.data;
+    } catch (error: any) {
+      console.error("Error in createDrink:", error.response?.data || error.message);
+      throw error;
+    }
+  };
+  
+  export const updateDrink = async (
+    drinkId: string,
+    formData: {
+      name: string;
+      ml: string;
+      price: string;
+    }
+  ): Promise<Drink> => {
+    try {
+      const response = await axiosInstance.put<{ data: Drink }>(`/drinks/${drinkId}`, {
+        name: formData.name,
+        ml: parseFloat(formData.ml),
+        price: parseFloat(formData.price),
+      });
+      return response.data.data;
+    } catch (error: any) {
+      console.error("Error in updateDrink:", error.response?.data || error.message);
+      throw error;
+    }
+  };
+  
+  export const deleteDrink = async (id: string): Promise<void> => {
+    try {
+      await axiosInstance.delete(`/drinks/${id}`);
+    } catch (error: any) {
+      console.error("Error in deleteDrink:", error.response?.data || error.message);
+      throw error;
+    }
+  };
