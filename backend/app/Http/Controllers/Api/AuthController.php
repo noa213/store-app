@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
@@ -89,6 +90,7 @@ class AuthController extends Controller
         $userData['email_verified_at'] = now();
 
         $user = $this->userService->createUser($userData);
+        $user->assignRole($userData['role']);
 
         $token = $user->createToken(env('APP_URL'))->accessToken;
 
@@ -160,21 +162,9 @@ class AuthController extends Controller
     */
     public function login(LoginRequest $request): JsonResponse
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $user = Auth::user();
+        $user = User::where('email', $request->email)->first();
 
-            $token = $user->createToken(env('APP_URL'))->accessToken;
-
-            return response()->json([
-                'success' => true,
-                'statusCode' => 200,
-                'message' => 'User has been logged in successfully.',
-                'data' => [
-                    'user' => $user,
-                    'token' => $token,
-                ],
-            ], 200);
-        } else {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'success' => false,
                 'statusCode' => 401,
@@ -182,6 +172,18 @@ class AuthController extends Controller
                 'errors' => 'Unauthorized',
             ], 401);
         }
+
+        $token = $user->createToken(env('APP_URL'))->accessToken;
+
+        return response()->json([
+            'success' => true,
+            'statusCode' => 200,
+            'message' => 'User has been logged in successfully.',
+            'data' => [
+                'user' => $user,
+                'token' => $token,
+            ],
+        ], 200);
     }
 
     /**
