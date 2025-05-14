@@ -27,7 +27,8 @@ class UserController extends Controller
      *     path="/api/users",
      *     summary="Get all users",
      *     tags={"Users"},
-     *     @OA\Response(response=200, description="List of all users")
+     *     @OA\Response(response=200, description="List of all users"),
+     *     @OA\Response(response=403, description="Forbidden")
      * )
      */
     public function index()
@@ -42,7 +43,8 @@ class UserController extends Controller
      *     tags={"Users"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\Response(response=200, description="User found"),
-     *     @OA\Response(response=404, description="User not found")
+     *     @OA\Response(response=404, description="User not found"),
+     *     @OA\Response(response=403, description="Forbidden")
      * )
      */
     public function show($id)
@@ -68,7 +70,8 @@ class UserController extends Controller
      *             @OA\Property(property="favs_ar", type="array", @OA\Items(type="string"))
      *         )
      *     ),
-     *     @OA\Response(response=201, description="User created")
+     *     @OA\Response(response=201, description="User created"),
+     *     @OA\Response(response=403, description="Forbidden")
      * )
      */
     public function store(StoreUserRequest $request)
@@ -95,7 +98,8 @@ class UserController extends Controller
      *         )
      *     ),
      *     @OA\Response(response=200, description="User updated"),
-     *     @OA\Response(response=404, description="User not found")
+     *     @OA\Response(response=404, description="User not found"),
+     *     @OA\Response(response=403, description="Forbidden")
      * )
      */
     public function update(UpdateUserRequest $request, $id)
@@ -114,7 +118,8 @@ class UserController extends Controller
      *     tags={"Users"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\Response(response=200, description="User deleted"),
-     *     @OA\Response(response=404, description="User not found")
+     *     @OA\Response(response=404, description="User not found"),
+     *     @OA\Response(response=403, description="Forbidden")
      * )
      */
     public function destroy($id)
@@ -133,6 +138,7 @@ class UserController extends Controller
      *     security={{"sanctum":{}}},
      *     @OA\Response(response=200, description="User info retrieved successfully"),
      *     @OA\Response(response=400, description="User has been deleted"),
+     *     @OA\Response(response=403, description="Forbidden"),
      *     @OA\Response(response=500, description="Server error")
      * )
      */
@@ -158,7 +164,8 @@ class UserController extends Controller
      *         )
      *     ),
      *     @OA\Response(response=200, description="Token decoded successfully"),
-     *     @OA\Response(response=400, description="Invalid token")
+     *     @OA\Response(response=400, description="Invalid token"),
+     *     @OA\Response(response=403, description="Forbidden")
      * )
      */
     public function decodeToken(Request $request)
@@ -192,6 +199,7 @@ class UserController extends Controller
      *     ),
      *     @OA\Response(response=200, description="Role updated successfully"),
      *     @OA\Response(response=400, description="Invalid role or user trying to change own role"),
+     *     @OA\Response(response=403, description="Forbidden"),
      *     @OA\Response(response=404, description="User not found")
      * )
      */
@@ -223,6 +231,7 @@ class UserController extends Controller
      *     tags={"Users"},
      *     security={{"sanctum":{}}},
      *     @OA\Response(response=200, description="List of admins"),
+     *     @OA\Response(response=403, description="Forbidden"),
      *     @OA\Response(response=500, description="Server error")
      * )
      */
@@ -239,6 +248,7 @@ class UserController extends Controller
      *     tags={"Users"},
      *     security={{"sanctum":{}}},
      *     @OA\Response(response=200, description="List of users"),
+     *     @OA\Response(response=403, description="Forbidden"),
      *     @OA\Response(response=500, description="Server error")
      * )
      */
@@ -255,6 +265,7 @@ class UserController extends Controller
      *     tags={"Users"},
      *     security={{"sanctum":{}}},
      *     @OA\Response(response=200, description="Authenticated user role"),
+     *     @OA\Response(response=403, description="Forbidden"),
      *     @OA\Response(response=401, description="Unauthenticated")
      * )
      */
