@@ -1,11 +1,11 @@
-import { http } from '@/lib/http';
+import { axiosInstance } from '@/lib/http';
 
 import { Category } from '@/types/category'
 
 // get all categories
 export const getAllCategories = async (): Promise<Category[]> => {
   try {
-    const response = await http.get<any>('/categories');
+    const response = await axiosInstance.get<any>('/categories');
 
     if (response.status !== 200)
       throw new Error(`${response.status}: error fetching categories`);
@@ -20,7 +20,7 @@ export const getAllCategories = async (): Promise<Category[]> => {
 // get category by ID
 export const getCategoryById = async (categoryId: string): Promise<Category> => {
   try {
-    const response = await http.get<Category>(`/categories/${categoryId}`);
+    const response = await axiosInstance.get<Category>(`/categories/${categoryId}`);
 
     if (response.status !== 200)
       throw new Error(`${response.status}: ${response.statusText}`);
@@ -35,7 +35,7 @@ export const getCategoryById = async (categoryId: string): Promise<Category> => 
 // add a category
 export const addCategory = async (category: Category): Promise<Category> => {
   try {
-    const response = await http.post<Category>('/categories', category);
+    const response = await axiosInstance.post<Category>('/categories', category);
     if (response.status !== 201)
       throw new Error(`${response.status}: ${response.statusText}`);
 
@@ -52,7 +52,7 @@ export const updateCategory = async (
   updatedCategory: Partial<Category>
 ): Promise<string> => {
   try {
-    const response = await http.put<{ msg: string }>(`/categories/${categoryId}`, updatedCategory);
+    const response = await axiosInstance.put<{ msg: string }>(`/categories/${categoryId}`, updatedCategory);
 
     if (response.status !== 200)
       throw new Error(`${response.status}: ${response.statusText}`);
@@ -67,7 +67,7 @@ export const updateCategory = async (
 // delete category by ID
 export const deleteCategory = async (categoryId: string): Promise<string> => {
   try {
-    const response = await http.delete<{ msg: string }>(`/categories/${categoryId}`);
+    const response = await axiosInstance.delete<{ msg: string }>(`/categories/${categoryId}`);
 
     if (response.status !== 200)
       throw new Error(`${response.status}: ${response.statusText}`);

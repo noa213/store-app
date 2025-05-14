@@ -1,5 +1,7 @@
+
 import { Drink } from '@/types/drink';
 import axiosInstance from "./axiosInstance";
+
 
 
 export const getDrinks = async (): Promise<Drink[]> => {

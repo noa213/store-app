@@ -7,7 +7,6 @@ import { getAllCategories, addCategory, updateCategory, deleteCategory } from "@
 import { Category } from "@/types/category";
 
 const CategoriesPage = () => {
-  console.log('render CategoriesPage')
 
   const [isAddCategory, setIsAddCategory] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -90,7 +89,7 @@ const CategoriesPage = () => {
       {selectedCategory && (
         <div className="mt-8 flex justify-center">
           <EditCategoryForm category={selectedCategory}
-                        closePopup={() => setIsAddCategory(false)}
+                        closePopup={() => setSelectedCategory(null)}
                         handleUpdateCategory={handleUpdateCategory} />
         </div>
       )}

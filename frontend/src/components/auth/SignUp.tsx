@@ -1,28 +1,25 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { createUser } from "@/api/userApi";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-interface AddUserProps {
-  onClose: () => void;
-  onUserAdded?: () => void;
-}
-
-const AddUser: React.FC<AddUserProps> = ({ onClose, onUserAdded }) => {
-  const router = useRouter();
+interface SignUpProps {
+    closeSignUp: () => void
+    registerUser: (data: any) => void;
+  };
+  
+export default function SignUp({registerUser, closeSignUp}:SignUpProps) {
   const [user, setUser] = useState({
     name: "",
     email: "",
     role: "",
     password: "",
+    password_confirmation: "",
+    favs_ar: []
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setUser((prevUser) => ({ ...prevUser, [name]: value }));
   };
@@ -30,15 +27,7 @@ const AddUser: React.FC<AddUserProps> = ({ onClose, onUserAdded }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await createUser(user);
-      toast.success("User added successfully!", { position: "top-right" });
-      setUser({ name: "", email: "", role: "", password: "" });
-
-      if (onUserAdded) {
-        onUserAdded();
-      } else {
-        router.push("/users?adduser=true");
-      }
+      await registerUser(user);
     } catch (error: any) {
       console.error("Error adding user:", error.response?.data || error.message);
       toast.error("Failed to add user.", { position: "top-right" });
@@ -89,6 +78,15 @@ const AddUser: React.FC<AddUserProps> = ({ onClose, onUserAdded }) => {
           required
           className="w-full p-2 border border-gray-300 rounded"
         />
+        <input
+          type="password"
+          name="password_confirmation"
+          value={user.password_confirmation}
+          onChange={handleChange}
+          placeholder="Password confirmation"
+          required
+          className="w-full p-2 border border-gray-300 rounded"
+        />
         <div className="flex justify-between">
           <button
             type="submit"
@@ -96,13 +94,15 @@ const AddUser: React.FC<AddUserProps> = ({ onClose, onUserAdded }) => {
           >
             Add User
           </button>
-          <div>
-            <button onClick={onClose}>Close</button>
-          </div>
+          <button
+            type="button"
+            className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
+            onClick={closeSignUp}
+          >
+            Cancel
+          </button>
         </div>
       </form>
     </div>
   );
-};
-
-export default AddUser;
+}

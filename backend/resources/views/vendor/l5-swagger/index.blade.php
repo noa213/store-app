@@ -141,7 +141,39 @@
 
             requestInterceptor: function(request) {
                 request.headers['X-CSRF-TOKEN'] = '{{ csrf_token() }}';
+
+                
+                const token = sessionStorage.getItem('access_token');
+                if (token) {
+                    request.headers['Authorization'] = 'Bearer ' + token;
+                }
+                
                 return request;
+            },
+
+            responseInterceptor: function(response) {
+                if (
+                    (response.url.endsWith('/api/login') && response.status === 200) ||
+                    (response.url.endsWith('/api/register') && response.status === 201)
+                ) {                    
+                    try {
+                        let body = JSON.parse(response.data);
+
+                        if (body && body.data && body.data.token) {
+                            sessionStorage.setItem('access_token', body.data.token);
+                        } else {
+                            console.warn('Token not found in response data:', body);
+                        }
+                    } catch (e) {
+                        console.warn('Login  Or Register response parsing failed:', e);
+                    }
+                }
+
+                if (response.url.endsWith('/api/logout') && response.status === 204) {
+                    sessionStorage.removeItem('access_token');
+                }
+
+                return response;
             },
 
             presets: [
